@@ -7,6 +7,5 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "Timothy Dao, Jacob MacInnis, Jeff Maxwell and Jon Sung",
-  "license": "MIT"
+  "author": "Timothy Dao, Jacob MacInnis, Jeff Maxwell and Jon Sung"
 }
