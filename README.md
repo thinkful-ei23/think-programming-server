@@ -2,7 +2,7 @@
 
 [Demo Think Programming App Here](https:///)
 
-[Think Programming Client Gighub](https://github.com/thinkful-ei23/think-programming-client)
+[Think Programming Client Github](https://github.com/thinkful-ei23/think-programming-client)
 ## Summary
 
 
