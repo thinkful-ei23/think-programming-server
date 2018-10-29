@@ -3,18 +3,17 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+const passport = require('passport');
 const localStrategy = require('./passport/localStrategy');
 const jwtStrategy = require('./passport/jwt');
+
 const { CLIENT_ORIGIN, PORT, MONGODB_URI } = require('./config');
+
+/*===Import Routers====*/
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 
-passport.use(localStrategy);
-passport.use(jwtStrategy);
-const jwtAuth = passport.authenticate('jwt', {
-  session: false,
-  failWithError: true
-});
 /*=========Create Express Application========*/
 const app = express();
 
@@ -36,10 +35,22 @@ app.use(cors(corsOption));
 /*=======Parse Request Body======*/
 app.use(express.json());
 
+
+/* Utilize the Passport`stategy`*/
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+/*======Protect Endpoints Using JWT Strategy======*/
+const jwtAuth = passport.authenticate('jwt', {
+  session: false,
+  failWithError: true
+});
+
 /*=======Routing=======*/
 app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
 app.use('/api', authRouter);
+
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
   const err = new Error('Not Found');
