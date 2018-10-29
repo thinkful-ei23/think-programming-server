@@ -10,10 +10,13 @@
   "author": "Timothy Dao, Jacob MacInnis, Jeff Maxwell and Jon Sung",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
+    "mocha": "^5.2.0",
     "mongoose": "^5.3.7",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -21,6 +24,10 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "mocha": "^5.2.0"
+=======
+    "cross-env": "^5.2.0"
+>>>>>>> 4c3579b57381a2004fee7daa974cb83cd7c85252
   }
 }
