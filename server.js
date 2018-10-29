@@ -3,30 +3,43 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
+const localStrategy = require('./passport/localStrategy');
+const jwtStrategy = require('./passport/jwt');
 const { CLIENT_ORIGIN, PORT, MONGODB_URI } = require('./config');
+const authRouter = require('./routes/auth');
+const userRouter = require('./routes/users');
 
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+const jwtAuth = passport.authenticate('jwt', {
+  session: false,
+  failWithError: true
+});
 /*=========Create Express Application========*/
 const app = express();
 
 /*========Morgan Middleware to Log all requests=======*/
-app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
-  skip: () => process.env.NODE_ENV === 'test'
-}));
+app.use(
+  morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
+    skip: () => process.env.NODE_ENV === 'test'
+  })
+);
 
 /*======CORS Middleware=====*/
-const corsOption = { 
-  origin: true, 
+const corsOption = {
+  origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
-}; app.use(cors(corsOption));
+};
+app.use(cors(corsOption));
 
 /*=======Parse Request Body======*/
 app.use(express.json());
 
 /*=======Routing=======*/
 app.get('/api/test', (req, res) => res.send('Hello World!'));
-
+app.use('/api/users', userRouter);
+app.use('/api', authRouter);
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -48,11 +61,13 @@ app.use((err, req, res, next) => {
 /*====Connect to DB and Listen for incoming connections====*/
 
 if (process.env.NODE_ENV !== 'test') {
-
-  mongoose.connect(MONGODB_URI)
+  mongoose
+    .connect(MONGODB_URI)
     .then(instance => {
       const conn = instance.connections[0];
-      console.info(`Connected to: mongodb://${conn.host}:${conn.port}/${conn.name}`);
+      console.info(
+        `Connected to: mongodb://${conn.host}:${conn.port}/${conn.name}`
+      );
     })
     .catch(err => {
       console.error(`ERROR: ${err.message}`);
@@ -60,11 +75,13 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      app.listen(PORT, function () {
-        console.info(`Server listening on ${this.address().port}`);
-      }).on('error', err => {
-        console.error(err);
-      });
+      app
+        .listen(PORT, function() {
+          console.info(`Server listening on ${this.address().port}`);
+        })
+        .on('error', err => {
+          console.error(err);
+        });
     });
 }
 
