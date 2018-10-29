@@ -31,6 +31,7 @@
 ### Deployment
 * Heroku
 * Github
+* Travis CI
 
 ### Developers
 * Timothy Dao
