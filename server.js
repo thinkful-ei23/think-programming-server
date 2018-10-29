@@ -35,12 +35,11 @@ app.use(cors(corsOption));
 
 /*=======Parse Request Body======*/
 app.use(express.json());
-app.use('/api/users', userRouter);
-app.use('/api', authRouter);
 
 /*=======Routing=======*/
 app.get('/api/test', (req, res) => res.send('Hello World!'));
-
+app.use('/api/users', userRouter);
+app.use('/api', authRouter);
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
   const err = new Error('Not Found');
