@@ -49,7 +49,7 @@ const jwtAuth = passport.authenticate('jwt', {
 /*=======Routing=======*/
 app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
-app.use('/api', authRouter);
+app.use('/api/auth', authRouter);
 
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
