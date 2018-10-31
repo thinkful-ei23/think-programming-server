@@ -16,6 +16,7 @@ const { CLIENT_ORIGIN, PORT, MONGODB_URI } = require('./config');
 /*===Import Routers====*/
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
+const gameRoomRouter = require('./routes/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
@@ -53,6 +54,7 @@ const jwtAuth = passport.authenticate('jwt', {
 app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api', gameRoomRouter);
 
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {

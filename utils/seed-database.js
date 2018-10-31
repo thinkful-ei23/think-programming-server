@@ -4,10 +4,12 @@ const mongoose = require('mongoose');
 
 const { MONGODB_URI } = require('../config');
 
+// Import models
 const User = require('../models/user');
-const JSQuestion = require('../models/jsQuestion');
+const GameQuestions = require('../models/gameQuestions');
+// Import seed data
 const seedUsers = require('../db/seed/users');
-const seedJSQuestions = require('../db/seed/jsQuestions');
+const seedGameQuestions = require('../db/seed/gameQuestions');
 
 mongoose.connect(MONGODB_URI)
   .then(() => mongoose.connection.db.dropDatabase())
@@ -15,12 +17,12 @@ mongoose.connect(MONGODB_URI)
     return Promise.all([
       User.insertMany(seedUsers),
       User.createIndexes(),
-      JSQuestion.insertMany(seedJSQuestions),
-      JSQuestion.createIndexes()
+      GameQuestions.insertMany(seedGameQuestions),
+      GameQuestions.createIndexes()
     ]);
   })
   .then((results) => {
-    console.log(`inserted ${results[0].length} users`, `inserted ${results[1].length} JavaScript Questions`);
+    console.log(`inserted ${results[0].length} users`, 'inserted all game questions');
   })
   .then(() => mongoose.disconnect())
   .catch(err => {

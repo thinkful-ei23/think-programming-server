@@ -1,9 +1,12 @@
 [{
-  "name": "user",
-  "username": "userOne",
-  "password": "password12"
-},{
-  "name": "user",
-  "username": "userOne",
-  "password": "password12"
+  "_id": "000000000000000000000001",
+  "name": "Bob User",
+  "username": "bobuser",
+  "password": "$2a$10$BCli1Z0aJ/qxghol1M025eS9J.5dIIwcwK40wut8nBO/Oqc.Nhc7a"
+},
+{
+  "_id": "000000000000000000000002",
+  "name": "Joe User",
+  "username": "joeuser",
+  "password": "$2a$10$QJCIX42iD5QMxLRgHHBJre2rH6c6nI24UysmSYtkmeFv6X8uS1kgi"
 }]
