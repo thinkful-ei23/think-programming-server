@@ -1,6 +1,6 @@
 # Think Programming - SERVER
 
-[Demo Think Programming App Here](https:///)
+[Demo Think Programming App Here](https://think-programming-client.herokuapp.com/)
 
 [Think Programming Client Github](https://github.com/thinkful-ei23/think-programming-client)
 ## Summary
