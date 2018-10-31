@@ -105,6 +105,10 @@ if (process.env.NODE_ENV !== 'test') {
           console.log(data, 'Messaged recieved!');
           io.emit('TYPING', data);
         });
+        socket.on('FINISHED', function(data){
+          console.log(data, 'Finshed Button Pressed!');
+          io.emit('FINISHED', data);
+        });
       });
     });
 }
