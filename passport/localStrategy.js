@@ -9,21 +9,22 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
     .then(results => {
       user = results;
       if (!user) {
-        return Promise.reject({
-          reason: 'LoginError',
-          message: 'Incorrect username',
-          location: 'username'
-        });
+        const err = new Error('Incorrect username');
+        err.status = 400;
+        err.location = 'username';
+        err.message = 'Incorrect Username';
+        return Promise.reject(err);
       }
       return user.validatePassword(password);
     })
     .then(isValid => {
       if (!isValid) {
-        return Promise.reject({
-          reason: 'LoginError',
-          message: 'Incorrect password',
-          location: 'password'
-        });
+        const err = new Error('Incorrect Password');
+        err.status = 401;
+        err.reason = 'LoginError',
+        err.message = 'Incorrect Password';
+        err.location = 'password'; 
+        return Promise.reject(err);
       }
       return callback(null, user);
     })

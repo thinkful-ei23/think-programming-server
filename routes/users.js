@@ -13,6 +13,8 @@ router.post('/', (req, res, next) => {
   if (missingField) {
     const err = new Error(`Missing '${missingField}' in request body`);
     err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = missingField;
     return next(err);
   }
 
@@ -24,6 +26,8 @@ router.post('/', (req, res, next) => {
   if (nonStringField) {
     const err = new Error(`Field: '${nonStringField}' must be type String`);
     err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = nonStringField;
     return next(err);
   }
 
@@ -44,6 +48,8 @@ router.post('/', (req, res, next) => {
       `Field: '${nonTrimmedField}' cannot start or end with whitespace`
     );
     err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = nonTrimmedField;
     return next(err);
   }
 
@@ -65,6 +71,8 @@ router.post('/', (req, res, next) => {
       `Field: '${tooSmallField}' must be at least ${min} characters long`
     );
     err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = tooSmallField;
     return next(err);
   }
 
@@ -80,6 +88,8 @@ router.post('/', (req, res, next) => {
       `Field: '${tooLargeField}' must be at most ${max} characters long`
     );
     err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = tooLargeField;
     return next(err);
   }
 

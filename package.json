@@ -4,16 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha --file test/server.test.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --file test/server.test.js",
     "start": "node server.js"
   },
   "author": "Timothy Dao, Jacob MacInnis, Jeff Maxwell and Jon Sung",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "chai": "^4.2.0",
-    "chai-http": "^4.2.0",
     "cors": "^2.8.4",
-    "cross-env": "^5.2.0",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
@@ -26,6 +23,10 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
   }
 }

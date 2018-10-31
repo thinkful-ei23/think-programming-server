@@ -2,18 +2,13 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
-const challengeSchema = new mongoose.Schema({
+const jsQuestionSchema = new mongoose.Schema({
   title: { type: String }, // JavaScript, HTML, CSS, Algorithm, etc
   question: { type: String }, 
-  answer: { type: String }, // User/Challenger's posted answer
-  comment: { 
-    type: String,
-    default: Date.now // Timestamp of the posted comment
-  } // User/Challeger's comment on rejection
 });
 
 // Transform output during `res.json(data)`, `console.log(data)` etc.
-userSchema.set('toObject', {
+jsQuestionSchema.set('toObject', {
   virtuals: true,
   transform: (doc, result) => {
     delete result._id;
@@ -21,4 +16,4 @@ userSchema.set('toObject', {
   }
 });
 
-module.exports = mongoose.model('Challenge', challengeSchema);
+module.exports = mongoose.model('JSQuestion', jsQuestionSchema);
