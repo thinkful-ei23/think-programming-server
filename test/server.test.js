@@ -1,25 +1,32 @@
-// 'use strict';
+'use strict';
 
-// // Clear the console before each run
-// // process.stdout.write("\x1Bc\n");
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
-// const chai = require('chai');
-// const chaiHttp = require('chai-http');
+const {TEST_DATABASE_URL} = require('../config');
+const {dbConnect, dbDisconnect} = require('../db-mongoose');
+// const {dbConnect, dbDisconnect} = require('../db-knex');
 
-// const app = require('../server');
+// Set NODE_ENV to `test` to disable http layer logs
+// You can do this in the command line, but this is cross-platform
+process.env.NODE_ENV = 'test';
 
-// const expect = chai.expect;
+// Clear the console before each run
+process.stdout.write('\x1Bc\n');
 
-// chai.use(chaiHttp);
+const expect = chai.expect;
+chai.use(chaiHttp);
 
-// describe('Reality Check', () => {
-//   it('true should be true', () => {
-//     expect(true).to.be.true;
-//   });
+before(function() {
+  return dbConnect(TEST_DATABASE_URL);
+});
 
-//   it('2 + 2 should equal 4', () => {
-//     expect(2 + 2).to.equal(4);
-//   });
-// });
-// // test
-// // praying test
+after(function() {
+  return dbDisconnect();
+});
+
+describe('Mocha and Chai', function() {
+  it('should be properly setup', function() {
+    expect(true).to.be.true;
+  });
+});
