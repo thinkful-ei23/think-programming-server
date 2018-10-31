@@ -1,5 +1,8 @@
 'use strict';
 const express = require('express');
+
+const socket = require('socket.io');
+
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -86,13 +89,23 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      app
-        .listen(PORT, function() {
-          console.info(`Server listening on ${this.address().port}`);
-        })
+      let server = app.listen(PORT, function() {
+        console.info(`Server listening on ${this.address().port}`);
+      })
         .on('error', err => {
           console.error(err);
         });
+        /*====Socket.io Server====*/
+      let io = socket(server);
+
+      io.on('connection', (socket) => {
+        console.log(socket.id, 'socket ID');
+
+        socket.on('TYPING', function(data){
+          console.log(data, 'Messaged recieved!');
+          io.emit('TYPING', data);
+        });
+      });
     });
 }
 

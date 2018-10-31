@@ -1,0 +1,41 @@
+[
+  {"title": "Replace With Alphabet Position",
+    "question": "Given a string, replace every letter with its position in the alphabet. If anything in the text isn't a letter, ignore it and don't return it."
+  },
+  {
+    "title": "Add to Front",
+    "question": "Given an array and an element, the function 'addToFront' adds the given element to the front of the given array, and returns the given array."
+  },
+  {
+    "title": "Add Object Property",
+    "question": "Given two objects and a key, the function 'addObjectProperty' sets a new property on the 1st object at the given key. The value of that new property is the entire 2nd object."
+  },
+  {
+    "title": "Join Arrays of Arrays",
+    "question": "Given an array of arrays, the function 'joinArrayOfArrays' returns a single array containing the elements of the nested arrays."
+  },
+  {
+    "title": "Count Characters in a String",
+    "question": "Given a string input and a character, the function 'countCharacter' returns the number of occurrences of a given character in the given string."
+  },
+  {
+    "title": "Square All Elements in an Array",
+    "question": "Given a array of numbers, the function 'squareElements' should return a new array where each element is the square of the element of the given array."
+  },
+  {
+    "title": "Get the Length of Two Words",
+    "question": "Given 2 words, the function 'getLengthOfTwoWords' returns the sum of their lengths."
+  },
+  {
+    "title": "Get All Elements But the Nth",
+    "question": "Given an array and an index, the function 'getAllElementsButNth' returns an array with all the elements but the nth."
+  },
+  {
+    "title": "Extend",
+    "question": "Given two objects, 'extend' adds properties from the 2nd object to the 1st object."
+  },
+  {
+    "title": "Repeat String",
+    "question": "Given a string and a number, the function 'repeatString' returns the given string repeated the given number of times."
+  }
+]
