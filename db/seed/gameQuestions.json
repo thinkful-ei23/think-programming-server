@@ -42,31 +42,39 @@
     }
   ],
   "htmlQuestions": [{
-    "title": "Get All Elements But the Nth",
-    "question": "Given an array and an index, the function 'getAllElementsButNth' returns an array with all the elements but the nth."
+    "title": "html Question1",
+    "question": "This is html Question1.  This is html Question1  This is html Question1.  This is html Question1."
   },
   {
-    "title": "Extend",
-    "question": "Given two objects, 'extend' adds properties from the 2nd object to the 1st object."
+    "title": "html Question2",
+    "question": "This is html Question2, This is html Question2, This is html Question2, This is html Question2"
   },
   {
-    "title": "Repeat String",
-    "question": "Given a string and a number, the function 'repeatString' returns the given string repeated the given number of times."
+    "title": "html Question3",
+    "question": "This is html Question3, This is html Question3, This is html Question3, "
   }],
   "cssQuestions": [{
-    "title": "Extend",
-    "question": "Given two objects, 'extend' adds properties from the 2nd object to the 1st object."
+    "title": "css Question1",
+    "question": "this is css Question1. this is css Question1, this is css Question1"
   },
   {
-    "title": "Repeat String",
-    "question": "Given a string and a number, the function 'repeatString' returns the given string repeated the given number of times."
+    "title": "css Question2",
+    "question": "this is css Question2. this is css Question2. this is css Question2."
+  },
+  {
+    "title": "css Question3",
+    "question": "this is css Question3. this is css Question3. this is css Question3."
   }],
   "dsaQuestions": [{
-    "title": "Extend",
-    "question": "Given two objects, 'extend' adds properties from the 2nd object to the 1st object."
+    "title": "DSA Question 1",
+    "question": "This is the first DSA Question. This is the first DSA Question. This is the first DSA Question. "
   },
   {
-    "title": "Repeat String",
-    "question": "Given a string and a number, the function 'repeatString' returns the given string repeated the given number of times."
+    "title": "DSA Question 2",
+    "question": "This is the second DSA Question. This is the second DSA Question. This is the second DSA Question. "
+  }, 
+  {
+    "title": "DSA Question 3",
+    "question": "This is the third DSA Question. This is the third DSA Question. This is the third DSA Question. "
   }]
 }
