@@ -99,20 +99,84 @@ if (process.env.NODE_ENV !== 'test') {
         });
         /*====Socket.io Server====*/
       let io = socket(server);
-
-      io.on('connection', (socket) => {
-        console.log(socket.id, 'socket ID');
-        socket.on('SIT', function(data){
+      const nsp0 = io.of('/gameroom0/jsQuestions');
+      nsp0.on('connnection', socket => {
+        console.log('Room0 Connection');     
+        nsp0.to('SIT', data => {
           console.log(data, 'Player Sat');
-          io.emit('SIT', data);
-        })
-        socket.on('TYPING', function(data){
-          console.log(data, 'Messaged Recieved!');
-          io.emit('TYPING', data);
+          nsp0.emit('SIT', data);
         });
-        socket.on('FINISHED', function(data){
+        nsp0.to('STAND', data => {
+          console.log(data, 'Player Stood');
+          nsp0.emit('STAND', data);
+        });
+        nsp0.to('TYPING ', data => {
+          console.log(data, 'Messaged Recieved!');
+          nsp0.emit('TYPING', data);
+        });
+        nsp0.to('FINISHED', data => {
           console.log(data, 'Finshed Button Pressed!');
-          io.emit('FINISHED', data);
+          nsp0.emit('FINISHED', data);
+        });
+      });
+      const nsp1 = io.of('/gameroom1/htmlQuestions');
+      nsp1.on('connnection', socket => {
+        console.log('Room1 Connection');     
+        nsp1.on('SIT', data => {
+          console.log(data, 'Player Sat');
+          nsp1.emit('SIT', data);
+        });
+        nsp1.on('STAND', data => {
+          console.log(data, 'Player Stood');
+          nsp1.emit('STAND', data);
+        });
+        nsp1.on('TYPING ', data => {
+          console.log(data, 'Messaged Recieved!');
+          nsp1.emit('TYPING', data);
+        });
+        nsp1.on('FINISHED', data => {
+          console.log(data, 'Finshed Button Pressed!');
+          nsp1.emit('FINISHED', data);
+        });
+      });
+      const nsp2 = io.of('/gameroom2/cssQuestions');
+      nsp2.on('connnection', socket => {
+        console.log('Room2 Connection');     
+        nsp2.on('SIT', data => {
+          console.log(data, 'Player Sat');
+          nsp2.emit('SIT', data);
+        });
+        nsp2.on('STAND', data => {
+          console.log(data, 'Player Stood');
+          nsp2.emit('STAND', data);
+        });
+        nsp2.on('TYPING ', data => {
+          console.log(data, 'Messaged Recieved!');
+          nsp2.emit('TYPING', data);
+        });
+        nsp2.on('FINISHED', data => {
+          console.log(data, 'Finshed Button Pressed!');
+          nsp2.emit('FINISHED', data);
+        });
+      });
+      const nsp3 = io.of('/gameroom3/dsaQuestions');
+      nsp3.on('connnection', socket => {
+        console.log('Room3 Connection');     
+        nsp3.on('SIT', data => {
+          console.log(data, 'Player Sat');
+          nsp3.emit('SIT', data);
+        });
+        nsp3.on('STAND', data => {
+          console.log(data, 'Player Stood');
+          nsp3.emit('STAND', data);
+        });
+        nsp3.on('TYPING ', data => {
+          console.log(data, 'Messaged Recieved!');
+          nsp3.emit('TYPING', data);
+        });
+        nsp3.on('FINISHED', data => {
+          console.log(data, 'Finshed Button Pressed!');
+          nsp3.emit('FINISHED', data);
         });
       });
     });
