@@ -102,9 +102,12 @@ if (process.env.NODE_ENV !== 'test') {
 
       io.on('connection', (socket) => {
         console.log(socket.id, 'socket ID');
-
+        socket.on('SIT', function(data){
+          console.log(data, 'Player Sat');
+          io.emit('SIT', data);
+        })
         socket.on('TYPING', function(data){
-          console.log(data, 'Messaged recieved!');
+          console.log(data, 'Messaged Recieved!');
           io.emit('TYPING', data);
         });
         socket.on('FINISHED', function(data){
