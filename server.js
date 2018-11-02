@@ -20,6 +20,8 @@ const gameRoomRouter = require('./routes/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
+const server = require('http').createServer(app);
+const io = socket(server);
 
 /*========Morgan Middleware to Log all requests=======*/
 app.use(
@@ -74,6 +76,39 @@ app.use((err, req, res, next) => {
   }
 });
 
+/*====Socket.io Server====*/
+let rooms = [];
+const jsSocket = io.of('/jsQuestions');
+jsSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  socket.emit('ROOMS', rooms);
+  socket.on('NEW_ROOM', function(username){
+    const current = rooms.find(room => room.user1 === username);
+    if(!current){
+      rooms.push({id: Date.now(), user1: username, user2: null});
+    }
+    io.of('/jsQuestions').emit('NEW_ROOM', rooms);
+  })
+  socket.on('JOIN_ROOM', function({roomId, username}){
+    const room = rooms.find(room => room.id === roomId);
+    room.user2 = username;
+    rooms = rooms.filter($room => $room.id !== room.id);
+    io.of('/jsQuestions').emit('MATCH', {room, rooms});
+  })
+  socket.on('SIT', function(data){
+    console.log(data, 'Player Sat');
+    io.emit('SIT', data);
+  })
+  socket.on('TYPING', function(data){
+    console.log(data, 'Messaged Recieved!');
+    io.emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data){
+    console.log(data, 'Finshed Button Pressed!');
+    io.emit('FINISHED', data);
+  });
+});
+
 /*====Connect to DB and Listen for incoming connections====*/
 
 if (process.env.NODE_ENV !== 'test') {
@@ -91,30 +126,12 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      let server = app.listen(PORT, function() {
+      server.listen(PORT, function() {
         console.info(`Server listening on ${this.address().port}`);
       })
         .on('error', err => {
           console.error(err);
         });
-        /*====Socket.io Server====*/
-      let io = socket(server);
-
-      io.on('connection', (socket) => {
-        console.log(socket.id, 'socket ID');
-        socket.on('SIT', function(data){
-          console.log(data, 'Player Sat');
-          io.emit('SIT', data);
-        })
-        socket.on('TYPING', function(data){
-          console.log(data, 'Messaged Recieved!');
-          io.emit('TYPING', data);
-        });
-        socket.on('FINISHED', function(data){
-          console.log(data, 'Finshed Button Pressed!');
-          io.emit('FINISHED', data);
-        });
-      });
     });
 }
 
