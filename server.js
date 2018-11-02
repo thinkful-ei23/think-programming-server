@@ -41,7 +41,6 @@ app.use(cors(corsOption));
 /*=======Parse Request Body======*/
 app.use(express.json());
 
-
 /* Utilize the Passport`stategy`*/
 passport.use(localStrategy);
 passport.use(jwtStrategy);
@@ -79,64 +78,126 @@ app.use((err, req, res, next) => {
 /*====Socket.io Server====*/
 let jsRooms = [];
 const jsSocket = io.of('/jsQuestions');
-jsSocket.on('connection', (socket) => {
+jsSocket.on('connection', socket => {
   console.log(socket.id, 'socket ID');
   socket.emit('ROOMS', jsRooms);
-  socket.on('NEW_ROOM', function(username){
+  socket.on('NEW_ROOM', function(username) {
     const current = jsRooms.find(room => room.user1 === username);
-    if(!current){
-      jsRooms.push({id: Date.now(), user1: username, user2: null});
+    if (!current) {
+      jsRooms.push({ id: Date.now(), user1: username, user2: null });
     }
     io.of('/jsQuestions').emit('NEW_ROOM', jsRooms);
   });
-  socket.on('JOIN_ROOM', function({roomId, username}){
+  socket.on('JOIN_ROOM', function({ roomId, username }) {
     const room = jsRooms.find(room => room.id === roomId);
     room.user2 = username;
     jsRooms = jsRooms.filter($room => $room.id !== room.id);
-    io.of('/jsQuestions').emit('MATCH', {room, jsRooms});
+    io.of('/jsQuestions').emit('MATCH', { room, jsRooms });
   });
-  socket.on('SIT', function(data){
+  socket.on('SIT', function(data) {
     console.log(data, 'Player Sat');
     io.of('jsQuestions').emit('SIT', data);
   });
-  socket.on('TYPING', function(data){
+  socket.on('TYPING', function(data) {
     console.log(data, 'Messaged Recieved!');
     io.of('/jsQuestions').emit('TYPING', data);
   });
-  socket.on('FINISHED', function(data){
+  socket.on('FINISHED', function(data) {
     console.log(data, 'Finshed Button Pressed!');
     io.of('jsQuestions').emit('FINISHED', data);
   });
 });
 let htmlRooms = [];
 const htmlSocket = io.of('/htmlQuestions');
-htmlSocket.on('connection', (socket) => {
+htmlSocket.on('connection', socket => {
   console.log(socket.id, 'socket ID');
   socket.emit('ROOMS', htmlRooms);
-  socket.on('NEW_ROOM', function(username){
+  socket.on('NEW_ROOM', function(username) {
     const current = htmlRooms.find(room => room.user1 === username);
-    if(!current){
-      htmlRooms.push({id: Date.now(), user1: username, user2: null});
+    if (!current) {
+      htmlRooms.push({ id: Date.now(), user1: username, user2: null });
     }
     io.of('/htmlQuestions').emit('NEW_ROOM', htmlRooms);
   });
-  socket.on('JOIN_ROOM', function({roomId, username}){
+  socket.on('JOIN_ROOM', function({ roomId, username }) {
     const room = htmlRooms.find(room => room.id === roomId);
     room.user2 = username;
     htmlRooms = htmlRooms.filter($room => $room.id !== room.id);
-    io.of('/htmlQuestions').emit('MATCH', {room, htmlRooms});
+    io.of('/htmlQuestions').emit('MATCH', { room, htmlRooms });
   });
-  socket.on('SIT', function(data){
+  socket.on('SIT', function(data) {
     console.log(data, 'Player Sat');
     io.of('htmlQuestions').emit('SIT', data);
   });
-  socket.on('TYPING', function(data){
+  socket.on('TYPING', function(data) {
     console.log(data, 'Messaged Recieved!');
     io.of('/htmlQuestions').emit('TYPING', data);
   });
-  socket.on('FINISHED', function(data){
+  socket.on('FINISHED', function(data) {
     console.log(data, 'Finshed Button Pressed!');
     io.of('htmlQuestions').emit('FINISHED', data);
+  });
+});
+let cssRooms = [];
+const cssSocket = io.of('/cssQuestions');
+cssSocket.on('connection', socket => {
+  console.log(socket.id, 'socket ID');
+  socket.emit('ROOMS', cssRooms);
+  socket.on('NEW_ROOM', function(username) {
+    const current = cssRooms.find(room => room.user1 === username);
+    if (!current) {
+      cssRooms.push({ id: Date.now(), user1: username, user2: null });
+    }
+    io.of('/cssQuestions').emit('NEW_ROOM', cssRooms);
+  });
+  socket.on('JOIN_ROOM', function({ roomId, username }) {
+    const room = cssRooms.find(room => room.id === roomId);
+    room.user2 = username;
+    cssRooms = cssRooms.filter($room => $room.id !== room.id);
+    io.of('/cssQuestions').emit('MATCH', { room, cssRooms });
+  });
+  socket.on('SIT', function(data) {
+    console.log(data, 'Player Sat');
+    io.of('cssQuestions').emit('SIT', data);
+  });
+  socket.on('TYPING', function(data) {
+    console.log(data, 'Messaged Recieved!');
+    io.of('/cssQuestions').emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data) {
+    console.log(data, 'Finshed Button Pressed!');
+    io.of('cssQuestions').emit('FINISHED', data);
+  });
+});
+let dsaRooms = [];
+const dsaSocket = io.of('/dsaQuestions');
+dsaSocket.on('connection', socket => {
+  console.log(socket.id, 'socket ID');
+  socket.emit('ROOMS', dsaRooms);
+  socket.on('NEW_ROOM', function(username) {
+    const current = dsaRooms.find(room => room.user1 === username);
+    if (!current) {
+      dsaRooms.push({ id: Date.now(), user1: username, user2: null });
+    }
+    io.of('/dsaQuestions').emit('NEW_ROOM', dsaRooms);
+  });
+  socket.on('JOIN_ROOM', function({ roomId, username }) {
+    const room = dsaRooms.find(room => room.id === roomId);
+    room.user2 = username;
+    dsaRooms = dsaRooms.filter($room => $room.id !== room.id);
+    io.of('/dsaQuestions').emit('MATCH', { room, dsaRooms });
+  });
+  socket.on('SIT', function(data) {
+    console.log(data, 'Player Sat');
+    io.of('dsaQuestions').emit('SIT', data);
+  });
+  socket.on('TYPING', function(data) {
+    console.log(data, 'Messaged Recieved!');
+    io.of('/dsaQuestions').emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data) {
+    console.log(data, 'Finshed Button Pressed!');
+    io.of('dsaQuestions').emit('FINISHED', data);
   });
 });
 
@@ -157,9 +218,10 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      server.listen(PORT, function() {
-        console.info(`Server listening on ${this.address().port}`);
-      })
+      server
+        .listen(PORT, function() {
+          console.info(`Server listening on ${this.address().port}`);
+        })
         .on('error', err => {
           console.error(err);
         });
