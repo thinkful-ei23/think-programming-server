@@ -20,6 +20,8 @@ const gameRoomRouter = require('./routes/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
+const server = require('http').createServer(app);
+const io = socket(server);
 
 /*========Morgan Middleware to Log all requests=======*/
 app.use(
@@ -74,6 +76,70 @@ app.use((err, req, res, next) => {
   }
 });
 
+/*====Socket.io Server====*/
+let jsRooms = [];
+const jsSocket = io.of('/jsQuestions');
+jsSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  socket.emit('ROOMS', jsRooms);
+  socket.on('NEW_ROOM', function(username){
+    const current = jsRooms.find(room => room.user1 === username);
+    if(!current){
+      jsRooms.push({id: Date.now(), user1: username, user2: null});
+    }
+    io.of('/jsQuestions').emit('NEW_ROOM', jsRooms);
+  });
+  socket.on('JOIN_ROOM', function({roomId, username}){
+    const room = jsRooms.find(room => room.id === roomId);
+    room.user2 = username;
+    jsRooms = jsRooms.filter($room => $room.id !== room.id);
+    io.of('/jsQuestions').emit('MATCH', {room, jsRooms});
+  });
+  socket.on('SIT', function(data){
+    console.log(data, 'Player Sat');
+    io.of('jsQuestions').emit('SIT', data);
+  });
+  socket.on('TYPING', function(data){
+    console.log(data, 'Messaged Recieved!');
+    io.of('/jsQuestions').emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data){
+    console.log(data, 'Finshed Button Pressed!');
+    io.of('jsQuestions').emit('FINISHED', data);
+  });
+});
+let htmlRooms = [];
+const htmlSocket = io.of('/htmlQuestions');
+htmlSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  socket.emit('ROOMS', htmlRooms);
+  socket.on('NEW_ROOM', function(username){
+    const current = htmlRooms.find(room => room.user1 === username);
+    if(!current){
+      htmlRooms.push({id: Date.now(), user1: username, user2: null});
+    }
+    io.of('/htmlQuestions').emit('NEW_ROOM', htmlRooms);
+  });
+  socket.on('JOIN_ROOM', function({roomId, username}){
+    const room = htmlRooms.find(room => room.id === roomId);
+    room.user2 = username;
+    htmlRooms = htmlRooms.filter($room => $room.id !== room.id);
+    io.of('/htmlQuestions').emit('MATCH', {room, htmlRooms});
+  });
+  socket.on('SIT', function(data){
+    console.log(data, 'Player Sat');
+    io.of('htmlQuestions').emit('SIT', data);
+  });
+  socket.on('TYPING', function(data){
+    console.log(data, 'Messaged Recieved!');
+    io.of('/htmlQuestions').emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data){
+    console.log(data, 'Finshed Button Pressed!');
+    io.of('htmlQuestions').emit('FINISHED', data);
+  });
+});
+
 /*====Connect to DB and Listen for incoming connections====*/
 
 if (process.env.NODE_ENV !== 'test') {
@@ -91,30 +157,12 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      let server = app.listen(PORT, function() {
+      server.listen(PORT, function() {
         console.info(`Server listening on ${this.address().port}`);
       })
         .on('error', err => {
           console.error(err);
         });
-        /*====Socket.io Server====*/
-      let io = socket(server);
-
-      io.on('connection', (socket) => {
-        console.log(socket.id, 'socket ID');
-        socket.on('SIT', function(data){
-          console.log(data, 'Player Sat');
-          io.emit('SIT', data);
-        })
-        socket.on('TYPING', function(data){
-          console.log(data, 'Messaged Recieved!');
-          io.emit('TYPING', data);
-        });
-        socket.on('FINISHED', function(data){
-          console.log(data, 'Finshed Button Pressed!');
-          io.emit('FINISHED', data);
-        });
-      });
     });
 }
 

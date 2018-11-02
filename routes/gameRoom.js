@@ -8,7 +8,6 @@ const router = express.Router();
 /*======GET Endpoint for quiz questions=====*/
 router.get('/gameroom/questions/:questionType',(req,res,next)=>{
   const { questionType } = req.params;
-  console.log(typeof questionType, 'SEARCH THIS QUESTION')
   GameQuestions.findOne()
     .then(result => {
       res.json(result[`${questionType}`]);
