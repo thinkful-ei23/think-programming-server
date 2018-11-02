@@ -20,6 +20,8 @@ const gameRoomRouter = require('./routes/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
+const server = require('http').createServer(app);
+const io = socket(server);
 
 /*========Morgan Middleware to Log all requests=======*/
 app.use(
@@ -74,6 +76,24 @@ app.use((err, req, res, next) => {
   }
 });
 
+/*====Socket.io Server====*/
+const roomSocket = io.of('/gameroom0/jsQuestions');
+roomSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  socket.on('SIT', function(data){
+    console.log(data, 'Player Sat');
+    socket.emit('SIT', data);
+  });
+  socket.on('TYPING', function(data){
+    console.log(data, 'Messaged Recieved!');
+    socket.emit('TYPING', data);
+  });
+  socket.on('FINISHED', function(data){
+    console.log(data, 'Finshed Button Pressed!');
+    socket.emit('FINISHED', data);
+  });
+});
+
 /*====Connect to DB and Listen for incoming connections====*/
 
 if (process.env.NODE_ENV !== 'test') {
@@ -91,94 +111,12 @@ if (process.env.NODE_ENV !== 'test') {
       console.error(err);
     })
     .then(() => {
-      let server = app.listen(PORT, function() {
+      server.listen(PORT, function() {
         console.info(`Server listening on ${this.address().port}`);
       })
         .on('error', err => {
           console.error(err);
         });
-        /*====Socket.io Server====*/
-      let io = socket(server);
-      const nsp0 = io.of('/gameroom0/jsQuestions');
-      nsp0.on('connnection', socket => {
-        console.log('Room0 Connection');     
-        nsp0.to('SIT', data => {
-          console.log(data, 'Player Sat');
-          nsp0.emit('SIT', data);
-        });
-        nsp0.to('STAND', data => {
-          console.log(data, 'Player Stood');
-          nsp0.emit('STAND', data);
-        });
-        nsp0.to('TYPING ', data => {
-          console.log(data, 'Messaged Recieved!');
-          nsp0.emit('TYPING', data);
-        });
-        nsp0.to('FINISHED', data => {
-          console.log(data, 'Finshed Button Pressed!');
-          nsp0.emit('FINISHED', data);
-        });
-      });
-      const nsp1 = io.of('/gameroom1/htmlQuestions');
-      nsp1.on('connnection', socket => {
-        console.log('Room1 Connection');     
-        nsp1.on('SIT', data => {
-          console.log(data, 'Player Sat');
-          nsp1.emit('SIT', data);
-        });
-        nsp1.on('STAND', data => {
-          console.log(data, 'Player Stood');
-          nsp1.emit('STAND', data);
-        });
-        nsp1.on('TYPING ', data => {
-          console.log(data, 'Messaged Recieved!');
-          nsp1.emit('TYPING', data);
-        });
-        nsp1.on('FINISHED', data => {
-          console.log(data, 'Finshed Button Pressed!');
-          nsp1.emit('FINISHED', data);
-        });
-      });
-      const nsp2 = io.of('/gameroom2/cssQuestions');
-      nsp2.on('connnection', socket => {
-        console.log('Room2 Connection');     
-        nsp2.on('SIT', data => {
-          console.log(data, 'Player Sat');
-          nsp2.emit('SIT', data);
-        });
-        nsp2.on('STAND', data => {
-          console.log(data, 'Player Stood');
-          nsp2.emit('STAND', data);
-        });
-        nsp2.on('TYPING ', data => {
-          console.log(data, 'Messaged Recieved!');
-          nsp2.emit('TYPING', data);
-        });
-        nsp2.on('FINISHED', data => {
-          console.log(data, 'Finshed Button Pressed!');
-          nsp2.emit('FINISHED', data);
-        });
-      });
-      const nsp3 = io.of('/gameroom3/dsaQuestions');
-      nsp3.on('connnection', socket => {
-        console.log('Room3 Connection');     
-        nsp3.on('SIT', data => {
-          console.log(data, 'Player Sat');
-          nsp3.emit('SIT', data);
-        });
-        nsp3.on('STAND', data => {
-          console.log(data, 'Player Stood');
-          nsp3.emit('STAND', data);
-        });
-        nsp3.on('TYPING ', data => {
-          console.log(data, 'Messaged Recieved!');
-          nsp3.emit('TYPING', data);
-        });
-        nsp3.on('FINISHED', data => {
-          console.log(data, 'Finshed Button Pressed!');
-          nsp3.emit('FINISHED', data);
-        });
-      });
     });
 }
 
