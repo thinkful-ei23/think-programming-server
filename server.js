@@ -18,6 +18,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const gameRoomRouter = require('./routes/gameRoom');
 /*===Import Sockets====*/
+const { handleUsers, handleUserLogout } = require('./sockets/totalUsers');
 const { handleSit, handleStand, handleTyping, handleFinished } = require('./sockets/gameRoom');
 
 /*=========Create Express Application========*/
@@ -79,6 +80,16 @@ app.use((err, req, res, next) => {
 });
 
 /*====Socket.io Server====*/
+// Total Users Online Socket
+let totalUsers = [];
+const userSocket = io.of('/dashboard');
+userSocket.on('connection', (socket) => {
+  console.log(socket.id, 'dashboard connection');
+  handleUsers(socket, io, totalUsers);
+  handleUserLogout(socket, io, totalUsers);
+});
+
+// JavaScript Room Socket
 let jsRooms = [];
 const jsSocket = io.of('/jsQuestions');
 jsSocket.on('connection', (socket) => {
@@ -89,6 +100,7 @@ jsSocket.on('connection', (socket) => {
   handleFinished(socket, io, 'jsQuestions');
 });
 
+// HTML Room Socket
 let htmlRooms = [];
 const htmlSocket = io.of('/htmlQuestions');
 htmlSocket.on('connection', (socket) => {
@@ -120,6 +132,9 @@ htmlSocket.on('connection', (socket) => {
     io.of('htmlQuestions').emit('FINISHED', data);
   });
 });
+
+// CSS Room Socket
+// DSA Room Socket
 
 /*====Connect to DB and Listen for incoming connections====*/
 
