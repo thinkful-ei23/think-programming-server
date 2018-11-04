@@ -17,9 +17,10 @@ const { CLIENT_ORIGIN, PORT, MONGODB_URI } = require('./config');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const gameRoomRouter = require('./routes/gameRoom');
+
 /*===Import Sockets====*/
 const { handleUsers, handleUserLogout } = require('./sockets/totalUsers');
-const { handleSit, handleStand, handleTyping, handleFinished } = require('./sockets/gameRoom');
+const { handleGetPlayerArray, handleSit, handleStand, handleTyping, handleFinished,handlePlayerLeave } = require('./sockets/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
@@ -91,13 +92,16 @@ userSocket.on('connection', (socket) => {
 
 // JavaScript Room Socket
 let jsRooms = [];
+let jsPlayers = [];
 const jsSocket = io.of('/jsQuestions');
 jsSocket.on('connection', (socket) => {
   console.log(socket.id, 'socket ID');
-  handleSit(socket, io, 'jsQuestions');
-  handleStand(socket, io, 'jsQuestions');
+  handleGetPlayerArray(socket, io, 'jsQuestions', jsPlayers);
+  handleSit(socket, io, 'jsQuestions', jsPlayers);
+  handleStand(socket, io, 'jsQuestions', jsPlayers);
   handleTyping(socket, io, 'jsQuestions');
   handleFinished(socket, io, 'jsQuestions');
+  handlePlayerLeave(socket, io, 'jQuestions', jsPlayers);
 });
 
 // HTML Room Socket
