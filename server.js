@@ -20,7 +20,7 @@ const gameRoomRouter = require('./routes/gameRoom');
 
 /*===Import Sockets====*/
 const { handleUsers, handleUserLogout } = require('./sockets/totalUsers');
-const { handleGetPlayerArray, handleSit, handleStand, handleTyping, handleFinished,handlePlayerLeave } = require('./sockets/gameRoom');
+const { handleGetPlayerArray, handleSit, handleStand, handleTyping, handleFinished, handlePlayerLeave, handleApprove, handleReset, handleWrong } = require('./sockets/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
@@ -95,13 +95,15 @@ let jsRooms = [];
 let jsPlayers = [];
 const jsSocket = io.of('/jsQuestions');
 jsSocket.on('connection', (socket) => {
-  console.log(socket.id, 'socket ID');
   handleGetPlayerArray(socket, io, 'jsQuestions', jsPlayers);
   handleSit(socket, io, 'jsQuestions', jsPlayers);
   handleStand(socket, io, 'jsQuestions', jsPlayers);
   handleTyping(socket, io, 'jsQuestions');
   handleFinished(socket, io, 'jsQuestions');
-  handlePlayerLeave(socket, io, 'jQuestions', jsPlayers);
+  handlePlayerLeave(socket, io, 'jsQuestions', jsPlayers);
+  handleApprove(socket, io, 'jsQuestions');
+  handleReset(socket, io, 'jsQuestions');
+  handleWrong(socket, io, 'jsQuestions');
 });
 
 // HTML Room Socket
