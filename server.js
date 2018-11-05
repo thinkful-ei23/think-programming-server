@@ -60,7 +60,7 @@ const jwtAuth = passport.authenticate('jwt', {
 app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api', gameRoomRouter);
+app.use('/api/gameroom', gameRoomRouter);
 
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
