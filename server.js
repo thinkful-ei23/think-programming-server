@@ -106,39 +106,44 @@ jsSocket.on('connection', (socket) => {
 
 // HTML Room Socket
 let htmlRooms = [];
+let htmlPlayers = [];
 const htmlSocket = io.of('/htmlQuestions');
 htmlSocket.on('connection', (socket) => {
   console.log(socket.id, 'socket ID');
-  socket.emit('ROOMS', htmlRooms);
-  socket.on('NEW_ROOM', function(username){
-    const current = htmlRooms.find(room => room.user1 === username);
-    if(!current){
-      htmlRooms.push({id: Date.now(), user1: username, user2: null});
-    }
-    io.of('/htmlQuestions').emit('NEW_ROOM', htmlRooms);
-  });
-  socket.on('JOIN_ROOM', function({roomId, username}){
-    const room = htmlRooms.find(room => room.id === roomId);
-    room.user2 = username;
-    htmlRooms = htmlRooms.filter($room => $room.id !== room.id);
-    io.of('/htmlQuestions').emit('MATCH', {room, htmlRooms});
-  });
-  socket.on('SIT', function(data){
-    console.log(data, 'Player Sat');
-    io.of('htmlQuestions').emit('SIT', data);
-  });
-  socket.on('TYPING', function(data){
-    console.log(data, 'Messaged Recieved!');
-    io.of('/htmlQuestions').emit('TYPING', data);
-  });
-  socket.on('FINISHED', function(data){
-    console.log(data, 'Finshed Button Pressed!');
-    io.of('htmlQuestions').emit('FINISHED', data);
-  });
+  handleGetPlayerArray(socket, io, 'htmlQuestions', htmlPlayers);
+  handleSit(socket, io, 'htmlQuestions', htmlPlayers);
+  handleStand(socket, io, 'htmlQuestions', htmlPlayers);
+  handleTyping(socket, io, 'htmlQuestions');
+  handleFinished(socket, io, 'htmlQuestions');
+  handlePlayerLeave(socket, io, 'htmlQuestions', htmlPlayers);
 });
 
 // CSS Room Socket
+let cssRooms = [];
+let cssPlayers = [];
+const cssSocket = io.of('/cssQuestions');
+cssSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  handleGetPlayerArray(socket, io, 'cssQuestions', cssPlayers);
+  handleSit(socket, io, 'cssQuestions', cssPlayers);
+  handleStand(socket, io, 'cssQuestions', cssPlayers);
+  handleTyping(socket, io, 'cssQuestions');
+  handleFinished(socket, io, 'cssQuestions');
+  handlePlayerLeave(socket, io, 'cssQuestions', cssPlayers);
+});
 // DSA Room Socket
+let dsaRooms = [];
+let dsaPlayers = [];
+const dsaSocket = io.of('/dsaQuestions');
+dsaSocket.on('connection', (socket) => {
+  console.log(socket.id, 'socket ID');
+  handleGetPlayerArray(socket, io, 'dsaQuestions', dsaPlayers);
+  handleSit(socket, io, 'dsaQuestions', dsaPlayers);
+  handleStand(socket, io, 'dsaQuestions', dsaPlayers);
+  handleTyping(socket, io, 'dsaQuestions');
+  handleFinished(socket, io, 'dsaQuestions');
+  handlePlayerLeave(socket, io, 'dsaQuestions', dsaPlayers);
+});
 
 /*====Connect to DB and Listen for incoming connections====*/
 
