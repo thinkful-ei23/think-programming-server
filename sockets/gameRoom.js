@@ -7,7 +7,10 @@ exports.handleGetPlayerArray = (socket, io, nsString, playersArray) => {
 };
 exports.handleSit = (socket, io, nsString, playersArray) => {
   socket.on('SIT', data => {
-    playersArray.push(data.username);
+    let index = playersArray.indexOf(data.username);
+    if (index < 1) {
+      playersArray.push(data.username);
+    }
     io.of(nsString).emit('SIT', data);
     io.of(nsString).emit('PLAYERS', playersArray);
   });
