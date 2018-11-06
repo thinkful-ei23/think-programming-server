@@ -81,18 +81,35 @@ app.use((err, req, res, next) => {
 });
 
 /*====Socket.io Server====*/
+// Total Users Online Socket
+let totalUsers = [];
+let allRooms = {};
+let jsPlayers = [];
+let htmlPlayers = [];
+let cssPlayers = [];
+let dsaPlayers = [];
+allRooms.jsPlayers = jsPlayers;
+allRooms.htmlPlayers = htmlPlayers;
+allRooms.cssPlayers = cssPlayers;
+allRooms.dsaPlayers = dsaPlayers;
+const userSocket = io.of('/dashboard');
+userSocket.on('connection', (socket) => {
+  console.log(socket.id, 'dashboard connection');
+  handleUsers(socket, io, totalUsers);
+  handleUserLogout(socket, io, totalUsers);
+  handleAllPlayers(socket, io, allRooms);
+});
 
 // JavaScript Room Socket
 let jsRooms = [];
-let jsPlayers = [];
 const jsSocket = io.of('/jsQuestions');
 jsSocket.on('connection', (socket) => {
   handleGetPlayerArray(socket, io, 'jsQuestions', jsPlayers);
-  handleSit(socket, io, 'jsQuestions', jsPlayers);
-  handleStand(socket, io, 'jsQuestions', jsPlayers);
+  handleSit(socket, io, 'jsQuestions', jsPlayers, allRooms);
+  handleStand(socket, io, 'jsQuestions', jsPlayers, allRooms);
   handleTyping(socket, io, 'jsQuestions');
   handleFinished(socket, io, 'jsQuestions');
-  handlePlayerLeave(socket, io, 'jsQuestions', jsPlayers);
+  handlePlayerLeave(socket, io, 'jsQuestions', jsPlayers, allRooms);
   handleApprove(socket, io, 'jsQuestions');
   handleReset(socket, io, 'jsQuestions');
   handleWrong(socket, io, 'jsQuestions');
@@ -100,7 +117,6 @@ jsSocket.on('connection', (socket) => {
 console.log('jsPlayers', jsPlayers)
 // HTML Room Socket
 let htmlRooms = [];
-let htmlPlayers = [];
 const htmlSocket = io.of('/htmlQuestions');
 htmlSocket.on('connection', (socket) => {
   console.log(socket.id, 'socket ID');
@@ -117,7 +133,6 @@ htmlSocket.on('connection', (socket) => {
 
 // CSS Room Socket
 let cssRooms = [];
-let cssPlayers = [];
 const cssSocket = io.of('/cssQuestions');
 cssSocket.on('connection', (socket) => {
   console.log(socket.id, 'socket ID');
@@ -133,7 +148,6 @@ cssSocket.on('connection', (socket) => {
 });
 // DSA Room Socket
 let dsaRooms = [];
-let dsaPlayers = [];
 const dsaSocket = io.of('/dsaQuestions');
 dsaSocket.on('connection', (socket) => {
   console.log(socket.id, 'socket ID');
@@ -148,20 +162,7 @@ dsaSocket.on('connection', (socket) => {
   handleWrong(socket, io, 'dsaQuestions');
 });
 
-// Total Users Online Socket
-let totalUsers = [];
-let allRooms = {};
-allRooms.jsPlayers = jsPlayers;
-allRooms.htmlPlayers = htmlPlayers;
-allRooms.cssPlayers = cssPlayers;
-allRooms.dsaPlayers = dsaPlayers;
-const userSocket = io.of('/dashboard');
-userSocket.on('connection', (socket) => {
-  console.log(socket.id, 'dashboard connection');
-  handleUsers(socket, io, totalUsers);
-  handleUserLogout(socket, io, totalUsers);
-  handleAllPlayers(socket, io, allRooms);
-});
+
 /*====Connect to DB and Listen for incoming connections====*/
 
 if (process.env.NODE_ENV !== 'test') {

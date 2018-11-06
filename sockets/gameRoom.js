@@ -5,7 +5,7 @@ exports.handleGetPlayerArray = (socket, io, nsString, playersArray) => {
     io.of(nsString).emit('PLAYERS', playersArray);
   });
 };
-exports.handleSit = (socket, io, nsString, playersArray) => {
+exports.handleSit = (socket, io, nsString, playersArray, allPlayersObject) => {
   socket.on('SIT', data => {
     let index = playersArray.indexOf(data.username);
     if (index < 1) {
@@ -13,9 +13,10 @@ exports.handleSit = (socket, io, nsString, playersArray) => {
     }
     io.of(nsString).emit('SIT', data);
     io.of(nsString).emit('PLAYERS', playersArray);
+    io.of('/dashboard').emit('ALL_PLAYERS',  allPlayersObject);
   });
 };
-exports.handleStand = (socket, io, nsString, playersArray) => {
+exports.handleStand = (socket, io, nsString, playersArray, allPlayersObject) => {
   socket.on('STAND', data => {
     let index = playersArray.indexOf(data.username);
     if (index > -1 ) {
@@ -23,6 +24,7 @@ exports.handleStand = (socket, io, nsString, playersArray) => {
     }
     io.of(nsString).emit('STAND', data);
     io.of(nsString).emit('PLAYERS', playersArray);
+    io.of('/dashboard').emit('ALL_PLAYERS',  allPlayersObject);
   });
 };
 exports.handleTyping = (socket, io, nsString) => {
@@ -35,7 +37,7 @@ exports.handleFinished = (socket, io, nsString) => {
     io.of(nsString).emit('FINISHED', data);
   });
 };
-exports.handlePlayerLeave = (socket, io, nsString, playersArray) => {
+exports.handlePlayerLeave = (socket, io, nsString, playersArray, allPlayersObject) => {
   socket.on('LEAVE_GAME', username => {
     let index = playersArray.indexOf(username);
     if (index > -1 ) {
@@ -44,6 +46,7 @@ exports.handlePlayerLeave = (socket, io, nsString, playersArray) => {
     let questionIndex = 0;
     io.of(nsString).emit('LEAVE_GAME', playersArray);
     io.of(nsString).emit('RESET', questionIndex);
+    io.of('/dashboard').emit('ALL_PLAYERS',  allPlayersObject);
   });
 };
 exports.handleApprove = (socket, io, nsString) => {
