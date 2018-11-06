@@ -42,16 +42,16 @@
     }
   ],
   "htmlQuestions": [{
-    "title": "html Question1",
-    "question": "This is html Question1.  This is html Question1  This is html Question1.  This is html Question1."
+    "title": "Title and Paragraph",
+    "question": "Using an h1 and p write 'My first HTML title' and in a paragraph element write 'Learning is fun!'"
   },
   {
-    "title": "html Question2",
-    "question": "This is html Question2, This is html Question2, This is html Question2, This is html Question2"
+    "title": "Link To JQuery",
+    "question": "Use script tags to link to the jQuery CDN.  Here is the address for the jQuery CDN: 'jquery-3.3.1.min.js'... hint! hint! use the src attribute to link the libary"
   },
   {
-    "title": "html Question3",
-    "question": "This is html Question3, This is html Question3, This is html Question3, "
+    "title": "Add an HTML Link",
+    "question": "Using an a element add a link to 'https://think-programming-client.herokuapp.com'. make the links text say 'Think Programming' and use the href attribute inside of the a tags."
   }],
   "cssQuestions": [{
     "title": "css Question1",
