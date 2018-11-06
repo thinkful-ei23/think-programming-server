@@ -1,5 +1,5 @@
 'use strict';
-const expect = require('../expect');
+const expect = require('../../expect');
 const cheerio = require('cheerio');
 
 module.exports = {
@@ -7,7 +7,6 @@ module.exports = {
     const $ = cheerio.load(answer);
     expect($(element)).to.appear(1);
     expect($(element).text()).to.eql(string);
-    expect($(element).attr('href'));
-    expect($(element).attr('href','https://think-programming-client.herokuapp.com'));
+    expect($(element).attr('class','think-programming-title'));
   }
 };

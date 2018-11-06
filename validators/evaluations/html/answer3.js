@@ -1,5 +1,5 @@
 'use strict';
-const {evaluateElement} = require('../../helpers/html');
+const {evaluateElement} = require('../../helpers/html/html-helper3');
 
 module.exports = (htmlString, res) => {
   try{  

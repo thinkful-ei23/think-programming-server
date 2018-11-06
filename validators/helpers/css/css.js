@@ -1,5 +1,5 @@
 'use strict';
-const expect = require('../expect');
+const expect = require('../../expect');
 
 module.exports = {
   evaluateCSSClass: function(answer, _class) {

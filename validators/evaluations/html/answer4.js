@@ -1,10 +1,10 @@
 'use strict';
-const {evaluateElement} = require('../../helpers/html/html-helper1');
+const {evaluateElement} = require('../../helpers/html/html-helper4');
 
 module.exports = (htmlString, res) => {
   try {  
-    console.log('TRYING QUESTION 1');
-    evaluateElement(htmlString, 'h1', 'My first HTML title');
+    console.log('TRYING QUESTION 4');
+    evaluateElement(htmlString, 'h2', 'Think Programming');
     res.json({error: false, message: 'Challenge completed'});
   } catch(e) {
     console.log(e);

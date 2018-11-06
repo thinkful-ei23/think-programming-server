@@ -1,8 +1,8 @@
 {
   "jsQuestions": [
     { 
-      "title": "Replace With Alphabet Position",
-      "question": "Given a string, replace every letter with its position in the alphabet. If anything in the text isn't a letter, ignore it and don't return it."
+      "title": "Write A Function",
+      "question": ""
     },
     {
       "title": "Add to Front",
@@ -42,8 +42,8 @@
     }
   ],
   "htmlQuestions": [{
-    "title": "Title and Paragraph",
-    "question": "Using an h1 and p write 'My first HTML title' and in a paragraph element write 'Learning is fun!'"
+    "title": "Titles with h1",
+    "question": "Using an h1 element write 'My first HTML title'"
   },
   {
     "title": "Link To JQuery",
@@ -52,6 +52,10 @@
   {
     "title": "Add an HTML Link",
     "question": "Using an a element add a link to 'https://think-programming-client.herokuapp.com'. make the links text say 'Think Programming' and use the href attribute inside of the a tags."
+  },
+  {
+  "title": "Adding a class to an HTML element",
+    "question": "Make an h2 element with a class of 'think-programming-title' and the text 'Think Programming'"
   }],
   "cssQuestions": [{
     "title": "css Question1",

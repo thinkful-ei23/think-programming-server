@@ -1,6 +1,6 @@
 'use strict';
 
-const expect = require('../expect');
+const expect = require('../../expect');
 
 module.exports = {
   evaluateFn: function(answer, input, output) {
