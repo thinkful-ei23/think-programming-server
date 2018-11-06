@@ -1,4 +1,4 @@
-<h1 align="center"><img width=100% src="./src/components/images/logo/banner.png" alt="Think Programing Logo"></h1>
+<h1 align="center"><img width=100% src="https://raw.githubusercontent.com/thinkful-ei23/think-programming-client/master/src/components/images/logo/banner.png" alt="Think Programing Logo"></h1>
 
 ![React](https://img.shields.io/badge/react-16.6.0%2B-blue.svg) [![npm version](https://img.shields.io/badge/npm%20package-6.4.1-orange.svg)](https://badge.fury.io/js/npm) [![Build Status](https://travis-ci.org/thinkful-ei23/think-programming-server.svg?branch=master)](https://travis-ci.org/thinkful-ei23/think-programming-server) ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg) [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://think-programming-client.herokuapp.com/) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/think-programming/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) 
 
