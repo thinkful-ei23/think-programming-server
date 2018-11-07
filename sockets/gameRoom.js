@@ -37,6 +37,11 @@ exports.handleFinished = (socket, io, nsString) => {
     io.of(nsString).emit('FINISHED', data);
   });
 };
+exports.handleAnswered = (socket, io, nsString) => {
+  socket.on('ANSWERED', answerObject => {
+    io.of(nsString).emit('ANSWERED', answerObject);
+  });
+};
 exports.handlePlayerLeave = (socket, io, nsString, playersArray, allPlayersObject) => {
   socket.on('LEAVE_GAME', username => {
     let index = playersArray.indexOf(username);
@@ -51,6 +56,7 @@ exports.handlePlayerLeave = (socket, io, nsString, playersArray, allPlayersObjec
 };
 exports.handleApprove = (socket, io, nsString) => {
   socket.on('APPROVE', questionIndex => {
+    console.log('Approved');
     questionIndex += 1;
     io.of(nsString).emit('APPROVE', questionIndex);
   });
@@ -62,6 +68,7 @@ exports.handleReset = (socket, io, nsString) => {
 };
 exports.handleWrong = (socket, io, nsString) => {
   socket.on('WRONG', username => {
+    console.log('Wrong Answer')
     io.of(nsString).emit('WRONG', username);
   });
 };

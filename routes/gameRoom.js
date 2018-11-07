@@ -2,6 +2,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const GameQuestions = require('../models/gameQuestions');
+const UserStats = require('../models/userStats');
+
 
 // const {evaluateFn} = require('../validators/helpers/javascript/javascript-helper1');
 // const {evaluateElement} = require('../validators/helpers/html/html-helper3');
@@ -35,34 +37,188 @@ router.get('/questions',(req,res,next)=>{
 });
 /*======POST /answers Endpoint JavaScript Answers=====*/
 router.post('/answers/jsQuestions/:num',(req,res,next)=>{
+  const userId = req.user._id;
   let { num } = req.params;
   num = Number(num);
   const jsString = req.body.answer;
   if (num === 0) {
-    jsAnswer1(jsString, res);
+    jsAnswer1(jsString, res, userId);
   } else if (num === 1) {
-    jsAnswer2(jsString, res);
+    jsAnswer2(jsString, res, userId);
   } else if (num === 2) {
-    jsAnswer3(jsString, res);
+    jsAnswer3(jsString, res, userId);
   } else if (num === 3) {
-    jsAnswer4(jsString, res);
+    jsAnswer4(jsString, res, userId);
   }
 
 });
 
 /*======POST /answers Endpoint html Answers=====*/
 router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
+  const userId = req.user._id;
   let { num } = req.params;
   num = Number(num);
   const htmlString = req.body.answer;
   if (num === 0) {
-    htmlAnswer1(htmlString, res);
+    htmlAnswer1(htmlString, res, userId);
   } else if (num === 1) {
-    htmlAnswer2(htmlString, res);
+    htmlAnswer2(htmlString, res, userId);
   } else if (num === 2) {
-    htmlAnswer3(htmlString, res);
+    htmlAnswer3(htmlString, res, userId);
   } else if (num === 3) {
-    htmlAnswer4(htmlString, res);
+    htmlAnswer4(htmlString, res, userId);
+  }
+});
+
+/*======POST / Endpoint html Answers=====*/
+router.post('/judgment/:room',(req,res,next)=>{
+  const userId = req.user._id;
+  
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+
+  let { room } = req.params;
+  const verdict = req.body.answer;
+  // Increment/Decrement Total Points + RoomType points
+  if (room === 'jsQuestions') {
+    if (verdict === 'correct') {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints += 25;
+        userStats.javascriptTotalPoints = userStats.javascriptTotalPoints += 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    } else {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints -= 25;
+        userStats.javascriptTotalPoints = userStats.javascriptTotalPoints -= 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    }
+  } else if (room === 'htmlQuestions') {
+    if (verdict === 'correct') {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints += 25;
+        userStats.htmlTotalPoints = userStats.htmlTotalPoints += 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    } else {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints -= 25;
+        userStats.htmlTotalPoints = userStats.htmlTotalPoints -= 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    }
+  } else if (room === 'cssQuestions') {
+    if (verdict === 'correct') {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints += 25;
+        userStats.cssTotalPoints = userStats.cssTotalPoints += 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    } else {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints -= 25;
+        userStats.cssTotalPoints = userStats.cssTotalPoints -= 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    }
+  } else if (room === 'dsaQuestions') {
+    if (verdict === 'correct') {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints += 25;
+        userStats.dsaTotalPoints = userStats.dsaTotalPoints += 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    } else {
+      UserStats.findOne({ userId }, function(err, userStats) {
+        userStats.totalPoints = userStats.totalPoints -= 25;
+        userStats.dsaTotalPoints = userStats.dsaTotalPoints -= 25; 
+        userStats.save(function(err) {
+          if(err) {
+            console.log('ERROR! Updating User Stats');
+          }
+        });
+      })
+        .then(result => {
+          res.json(result);
+        })
+        .catch(err => {
+          return res.status(err.code).json(err);
+        });
+    }
   }
 });
 

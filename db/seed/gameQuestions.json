@@ -2,15 +2,15 @@
   "jsQuestions": [
     { 
       "title": "Write A Function",
-      "question": "Write a function called test, which takes a and b as arguments.  The function should console.logs a"
+      "question": "Write a function called test, which takes a and b as arguments.  The function should return a"
     },
     {
-      "title": "Add to Front",
-      "question": "Given an array and an element, the function 'addToFront' adds the given element to the front of the given array, and returns the given array."
+      "title": "Functions that Add",
+      "question": "Write a function called add that takes two arguments, num1 and num2.  Return the product of the two arguments."
     },
     {
-      "title": "Add Object Property",
-      "question": "Given two objects and a key, the function 'addObjectProperty' sets a new property on the 1st object at the given key. The value of that new property is the entire 2nd object."
+      "title": "Pushing To an Array",
+      "question": "Code a function called 'pushArray' that takes an 'array' and a number as arguments.  The function should push the number to the array and return the array."
     },
     {
       "title": "Join Arrays of Arrays",

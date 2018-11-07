@@ -20,7 +20,7 @@ const gameRoomRouter = require('./routes/gameRoom');
 
 /*===Import Sockets====*/
 const { handleUsers, handleUserLogout, handleAllPlayers } = require('./sockets/totalUsers');
-const { handleGetPlayerArray, handleSit, handleStand, handleTyping, handleFinished, handlePlayerLeave, handleApprove, handleReset, handleWrong } = require('./sockets/gameRoom');
+const { handleGetPlayerArray, handleSit, handleStand, handleTyping, handleFinished, handleAnswered, handlePlayerLeave, handleApprove, handleReset, handleWrong } = require('./sockets/gameRoom');
 
 /*=========Create Express Application========*/
 const app = express();
@@ -60,7 +60,7 @@ const jwtAuth = passport.authenticate('jwt', {
 app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/gameroom', gameRoomRouter);
+app.use('/api/gameroom', jwtAuth, gameRoomRouter);
 
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
@@ -109,6 +109,7 @@ jsSocket.on('connection', (socket) => {
   handleStand(socket, io, 'jsQuestions', jsPlayers, allRooms);
   handleTyping(socket, io, 'jsQuestions');
   handleFinished(socket, io, 'jsQuestions');
+  handleAnswered(socket, io, 'jsQuestions');
   handlePlayerLeave(socket, io, 'jsQuestions', jsPlayers, allRooms);
   handleApprove(socket, io, 'jsQuestions');
   handleReset(socket, io, 'jsQuestions');
@@ -125,6 +126,7 @@ htmlSocket.on('connection', (socket) => {
   handleStand(socket, io, 'htmlQuestions', htmlPlayers);
   handleTyping(socket, io, 'htmlQuestions');
   handleFinished(socket, io, 'htmlQuestions');
+  handleAnswered(socket, io, 'htmlQuestions');
   handlePlayerLeave(socket, io, 'htmlQuestions', htmlPlayers);
   handleApprove(socket, io, 'htmlQuestions');
   handleReset(socket, io, 'htmlQuestions');
@@ -141,6 +143,7 @@ cssSocket.on('connection', (socket) => {
   handleStand(socket, io, 'cssQuestions', cssPlayers);
   handleTyping(socket, io, 'cssQuestions');
   handleFinished(socket, io, 'cssQuestions');
+  handleAnswered(socket, io, 'cssQuestions');
   handlePlayerLeave(socket, io, 'cssQuestions', cssPlayers);
   handleApprove(socket, io, 'cssQuestions');
   handleReset(socket, io, 'cssQuestions');
@@ -156,6 +159,7 @@ dsaSocket.on('connection', (socket) => {
   handleStand(socket, io, 'dsaQuestions', dsaPlayers);
   handleTyping(socket, io, 'dsaQuestions');
   handleFinished(socket, io, 'dsaQuestions');
+  handleAnswered(socket, io, 'dsaQuestions');
   handlePlayerLeave(socket, io, 'dsaQuestions', dsaPlayers);
   handleApprove(socket, io, 'dsaQuestions');
   handleReset(socket, io, 'dsaQuestions');
