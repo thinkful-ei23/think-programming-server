@@ -2,7 +2,7 @@
   "jsQuestions": [
     { 
       "title": "Write A Function",
-      "question": ""
+      "question": "Write a function called test, which takes a and b as arguments.  The function should console.logs a"
     },
     {
       "title": "Add to Front",
