@@ -2,6 +2,7 @@
 
 const express = require('express');
 const User = require('../models/user');
+const UserStats = require('../models/userStats');
 const router = express.Router();
 
 /* ========== POST/CREATE A USER ========== */
@@ -121,5 +122,57 @@ router.post('/', (req, res, next) => {
       next(err);
     });
 });
+
+/* ========== POST/CREATE USERSTATS ========== */
+router.post('/stats', (req, res, next) => {
+  console.log('request', req.body)
+  /***** Never trust users - validate input *****/
+  const requiredFields = [ 'username' ];
+  const missingField = requiredFields.find(field => !(field in req.body));
+
+  if (missingField) {
+    const err = new Error(`Missing '${missingField}' in request body`);
+    err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = missingField;
+    return next(err);
+  }
+
+  const stringFields = ['username' ];
+  const nonStringField = stringFields.find(
+    field => field in req.body && typeof req.body[field] !== 'string'
+  );
+
+  if (nonStringField) {
+    const err = new Error(`Field: '${nonStringField}' must be type String`);
+    err.status = 422;
+    err.reason = 'ValidationError';
+    err.location = nonStringField;
+    return next(err);
+  }
+  const { username } = req.body;
+  return User.findOne({username})
+    .then(user =>{
+      return UserStats.create({
+        userId: user._id,
+        username: username,
+        totalPoints: 0,
+        totalAnswered: 0,
+        totalCorrect: 0,
+        totalIncorrect: 0,
+        correctPercentage: 0
+      });
+    })
+    .then(result => {
+      return res.status(201).location('/api/users/stats/${result.id}').json(result);
+    })
+    .catch(err => {
+      if (err.reason === 'ValidationError') {
+        return res.status(err.code).json(err);
+      }
+      next(err);
+    });
+});
+
 
 module.exports = router;
