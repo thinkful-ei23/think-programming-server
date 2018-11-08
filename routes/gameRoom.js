@@ -41,16 +41,45 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   let { num } = req.params;
   num = Number(num);
   const jsString = req.body.answer;
-  if (num === 0) {
-    jsAnswer1(jsString, res, userId);
-  } else if (num === 1) {
-    jsAnswer2(jsString, res, userId);
-  } else if (num === 2) {
-    jsAnswer3(jsString, res, userId);
-  } else if (num === 3) {
-    jsAnswer4(jsString, res, userId);
+  
+  // Validating basic function characteristics 
+  let hasFunction = jsString.match(/(function)/g);
+  let hasParenthesis = jsString.match(/[(\[][^\)\]]*?[)\]]/g);
+  let hasCurlyBraces = jsString.match(/[{\[][^\)\]]*?[}\]]/g);
+  
+  if (hasFunction === null || hasParenthesis === null || hasCurlyBraces === null) {
+    UserStats.findOne({ userId }, function(err, userStats) {
+      userStats.totalPoints = userStats.totalPoints -= 25;
+      userStats.totalAnswered = userStats.totalAnswered += 1;
+      userStats.totalIncorrect = userStats.totalIncorrect += 1;
+      userStats.correctPercentage = userStats.totalCorrect/userStats.totalAnswered * 100;
+      userStats.javascriptTotalPoints = userStats.javascriptTotalPoints -= 25;
+      userStats.javascriptTotalAnswered = userStats.javascriptTotalAnswered += 1;
+      userStats.javascriptTotalIncorrect += 1;
+      userStats.javascriptCorrectPercentage = userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100; 
+      userStats.save(function(err) {
+        if(err) {
+          console.log('ERROR! Updating User Stats');
+        }
+      });
+    })
+      .then(result => {
+        res.json({error: true, message: 'answer not valid html'});
+      })
+      .catch(err => {
+        return res.status(err.code).json(err);
+      });
+  } else {
+    if (num === 0) {
+      jsAnswer1(jsString, res, userId);
+    } else if (num === 1) {
+      jsAnswer2(jsString, res, userId);
+    } else if (num === 2) {
+      jsAnswer3(jsString, res, userId);
+    } else if (num === 3) {
+      jsAnswer4(jsString, res, userId);
+    }
   }
-
 });
 
 /*======POST /answers Endpoint html Answers=====*/
@@ -58,19 +87,40 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
   const userId = req.user._id;
   let { num } = req.params;
   num = Number(num);
+  
+  // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
   const htmlString = req.body.answer;
-  if (num === 0) {
-    htmlAnswer1(htmlString, res, userId);
-  } else if (num === 1) {
-    htmlAnswer2(htmlString, res, userId);
-  } else if (num === 2) {
-    htmlAnswer3(htmlString, res, userId);
-  } else if (num === 3) {
-    htmlAnswer4(htmlString, res, userId);
+  let htmlElementTest = htmlString.match(/(?:<[^>]*>)/g);
+  if (htmlElementTest === null || htmlElementTest.length < 2) {
+    UserStats.findOne({ userId }, function(err, userStats) {
+      userStats.totalPoints = userStats.totalPoints -= 25;
+      userStats.htmlTotalPoints = userStats.htmlTotalPoints -= 25; 
+      userStats.save(function(err) {
+        if(err) {
+          console.log('ERROR! Updating User Stats');
+        }
+      });
+    })
+      .then(result => {
+        res.json({error: true, message: 'answer not valid html'});
+      })
+      .catch(err => {
+        return res.status(err.code).json(err);
+      });
+  } else {
+    if (num === 0) {
+      htmlAnswer1(htmlString, res, userId);
+    } else if (num === 1) {
+      htmlAnswer2(htmlString, res, userId);
+    } else if (num === 2) {
+      htmlAnswer3(htmlString, res, userId);
+    } else if (num === 3) {
+      htmlAnswer4(htmlString, res, userId);
+    }
   }
 });
 
-/*======POST / Endpoint html Answers=====*/
+/*======POST / Endpoint Approve/Deny judgement=====*/
 router.post('/judgment/:room',(req,res,next)=>{
   const userId = req.user._id;
   
