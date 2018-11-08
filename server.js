@@ -17,6 +17,7 @@ const { CLIENT_ORIGIN, PORT, MONGODB_URI } = require('./config');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const gameRoomRouter = require('./routes/gameRoom');
+const statsRouter = require('./routes/stats');
 
 /*===Import Sockets====*/
 const { handleUsers, handleUserLogout, handleAllPlayers } = require('./sockets/totalUsers');
@@ -61,6 +62,7 @@ app.get('/api/test', (req, res) => res.send('Hello World!'));
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/gameroom', jwtAuth, gameRoomRouter);
+app.use('/api/stats', jwtAuth, statsRouter);
 
 /*=======Custom 404 Not Found route handler=======*/
 app.use((req, res, next) => {
