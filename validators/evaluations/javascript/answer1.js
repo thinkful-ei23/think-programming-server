@@ -6,6 +6,7 @@ const UserStats = require('../../../models/userStats');
 module.exports = (jsString, res, userId, next) => {  
   return Promise.all([evaluateFn(jsString, {a: 1, b: 2}, 1, res, userId, next)])
     .then((result) => {
+      console.log('line 9 javascript/answer1', result);
       if (result[0] === 'incorrect') {
         UserStats.findOne({ userId }, function(err, userStats) {
           userStats.totalPoints = userStats.totalPoints -= 25;
@@ -24,6 +25,7 @@ module.exports = (jsString, res, userId, next) => {
         });
         return res.json({error: true, message: 'function returns undefined'}).end();
       } else {
+        console.log('LINE 30 javascript/answer1')
         UserStats.findOne({ userId }, function(err, userStats) {
           userStats.totalPoints = userStats.totalPoints += 100;
           userStats.totalAnswered = userStats.totalAnswered += 1;
@@ -44,6 +46,7 @@ module.exports = (jsString, res, userId, next) => {
       res.json({error: false, message: 'Challenge completed'}).end();
     })
     .catch(e => {
+      console.log('here Jacob')
       console.log(e);
       UserStats.findOne({ userId }, function(err, userStats) {
         userStats.totalPoints = userStats.totalPoints -= 25;

@@ -139,7 +139,7 @@ jsSocket.on('connection', (socket) => {
   handleReset(socket, io, 'jsQuestions');
   handleWrong(socket, io, 'jsQuestions');
 });
-console.log('jsPlayers', jsPlayers)
+
 // HTML Room Socket
 let htmlRooms = [];
 const htmlSocket = io.of('/htmlQuestions');
