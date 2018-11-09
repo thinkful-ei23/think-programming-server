@@ -3,28 +3,50 @@ const {evaluateFn} = require('../../helpers/javascript/javascript-helper1');
 const mongoose = require('mongoose');
 const UserStats = require('../../../models/userStats');
 
-module.exports = (jsString, res, userId) => {  
-  return Promise.all([evaluateFn(jsString, {a: 1, b: 2}, 1)])
-    .then(() => {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints += 100;
-        userStats.totalAnswered = userStats.totalAnswered += 1;
-        userStats.totalCorrect = userStats.totalCorrect += 1;
-        userStats.correctPercentage = userStats.totalCorrect/userStats.totalAnswered * 100;
-        userStats.javascriptTotalPoints = userStats.javascriptTotalPoints += 100; 
-        userStats.javascriptTotalAnswered = userStats.javascriptTotalAnswered += 1;
-        userStats.javascriptTotalCorrect += 1;
-        userStats.javascriptCorrectPercentage = userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100; 
-  
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
+module.exports = (jsString, res, userId, next) => {  
+  return Promise.all([evaluateFn(jsString, {a: 1, b: 2}, 1, res, userId, next)])
+    .then((result) => {
+      console.log('line 9 javascript/answer1', result);
+      if (result[0] === 'incorrect') {
+        UserStats.findOne({ userId }, function(err, userStats) {
+          userStats.totalPoints = userStats.totalPoints -= 25;
+          userStats.totalAnswered = userStats.totalAnswered += 1;
+          userStats.totalIncorrect = userStats.totalIncorrect += 1;
+          userStats.correctPercentage = userStats.totalCorrect/userStats.totalAnswered * 100;
+          userStats.javascriptTotalPoints = userStats.javascriptTotalPoints -= 25; 
+          userStats.javascriptTotalAnswered = userStats.javascriptTotalAnswered += 1;
+          userStats.javascriptTotalIncorrect += 1;
+          userStats.javascriptCorrectPercentage = userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100;
+          userStats.save(function(err) {
+            if(err) {
+              console.log('ERROR! Updating User Stats');
+            }
+          });
         });
-      });
-      res.json({error: false, message: 'Challenge completed'});
+        return res.json({error: true, message: 'function returns undefined'}).end();
+      } else {
+        console.log('LINE 30 javascript/answer1')
+        UserStats.findOne({ userId }, function(err, userStats) {
+          userStats.totalPoints = userStats.totalPoints += 100;
+          userStats.totalAnswered = userStats.totalAnswered += 1;
+          userStats.totalCorrect = userStats.totalCorrect += 1;
+          userStats.correctPercentage = userStats.totalCorrect/userStats.totalAnswered * 100;
+          userStats.javascriptTotalPoints = userStats.javascriptTotalPoints += 100; 
+          userStats.javascriptTotalAnswered = userStats.javascriptTotalAnswered += 1;
+          userStats.javascriptTotalCorrect += 1;
+          userStats.javascriptCorrectPercentage = userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100; 
+  
+          userStats.save(function(err) {
+            if(err) {
+              console.log('ERROR! Updating User Stats');
+            }
+          });
+        });
+      }
+      res.json({error: false, message: 'Challenge completed'}).end();
     })
     .catch(e => {
+      console.log('here Jacob')
       console.log(e);
       UserStats.findOne({ userId }, function(err, userStats) {
         userStats.totalPoints = userStats.totalPoints -= 25;
@@ -41,6 +63,6 @@ module.exports = (jsString, res, userId) => {
           }
         });
       });
-      res.json({error: true, message: e});
+      res.json({error: true, message: e}).end();
     });
 };

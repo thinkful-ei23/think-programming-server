@@ -12,6 +12,7 @@ const jsAnswer1 = require('../validators/evaluations/javascript/answer1');
 const jsAnswer2 = require('../validators/evaluations/javascript/answer2');
 const jsAnswer3 = require('../validators/evaluations/javascript/answer3');
 const jsAnswer4 = require('../validators/evaluations/javascript/answer4');
+const jsAnswer5 = require('../validators/evaluations/javascript/answer5');
 const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
@@ -45,9 +46,16 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   // Validating basic function characteristics 
   let hasFunction = jsString.match(/(function)/g);
   let hasParenthesis = jsString.match(/[(\[][^\)\]]*?[)\]]/g);
-  let hasCurlyBraces = jsString.match(/[{\[][^\)\]]*?[}\]]/g);
+  // function to confirm answer has open and closing curly brackets
+  function findCurlyBrackets(string) {
+    if (string.includes('{') && string.includes('}')) {
+      return true;
+    }
+  }
+  let hasCurlyBraces = findCurlyBrackets(jsString);
   
-  if (hasFunction === null || hasParenthesis === null || hasCurlyBraces === null) {
+  if (hasFunction === null || hasParenthesis === null || hasCurlyBraces === false) {
+    
     UserStats.findOne({ userId }, function(err, userStats) {
       userStats.totalPoints = userStats.totalPoints -= 25;
       userStats.totalAnswered = userStats.totalAnswered += 1;
@@ -64,20 +72,22 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       });
     })
       .then(result => {
-        res.json({error: true, message: 'answer not valid html'});
+        res.json({error: true, message: 'answer not a valid function'});
       })
       .catch(err => {
         return res.status(err.code).json(err);
       });
   } else {
     if (num === 0) {
-      jsAnswer1(jsString, res, userId);
+      jsAnswer1(jsString, res, userId, next);
     } else if (num === 1) {
-      jsAnswer2(jsString, res, userId);
+      jsAnswer2(jsString, res, userId, next);
     } else if (num === 2) {
-      jsAnswer3(jsString, res, userId);
+      jsAnswer3(jsString, res, userId, next);
     } else if (num === 3) {
-      jsAnswer4(jsString, res, userId);
+      jsAnswer4(jsString, res, userId, next);
+    } else if (num === 4) {
+      jsAnswer5(jsString, res, userId, next);
     }
   }
 });
