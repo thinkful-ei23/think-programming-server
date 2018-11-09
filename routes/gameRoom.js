@@ -12,6 +12,7 @@ const jsAnswer1 = require('../validators/evaluations/javascript/answer1');
 const jsAnswer2 = require('../validators/evaluations/javascript/answer2');
 const jsAnswer3 = require('../validators/evaluations/javascript/answer3');
 const jsAnswer4 = require('../validators/evaluations/javascript/answer4');
+const jsAnswer5 = require('../validators/evaluations/javascript/answer5');
 const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
@@ -40,7 +41,6 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   const userId = req.user._id;
   let { num } = req.params;
   num = Number(num);
-  console.log(num, 'NUM NUM NUM')
   const jsString = req.body.answer;
   
   // Validating basic function characteristics 
@@ -86,6 +86,8 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       jsAnswer3(jsString, res, userId, next);
     } else if (num === 3) {
       jsAnswer4(jsString, res, userId, next);
+    } else if (num === 4) {
+      jsAnswer5(jsString, res, userId, next);
     }
   }
 });
