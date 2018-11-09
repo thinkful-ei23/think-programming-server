@@ -102,6 +102,28 @@ userSocket.on('connection', (socket) => {
   handleAllPlayers(socket, io, allRooms);
 });
 
+// Chatroom 
+const chatSocket = io.of('/chatroom');
+chatSocket.on('connection', (socket) => {
+  console.log(socket.id, 'chatroom connection');
+  
+  socket.on('new message', (message, name) => {
+    console.log(name, 'connected to chat');
+    console.log('message: ', message);
+    
+    io.of('/chatroom').emit('new message', {
+      name: name,
+      message: message
+    });
+
+    // socket.broadcast.emit('new message', {
+    //   name: name,
+    //   message: message
+    // });
+  });
+
+});
+
 // JavaScript Room Socket
 let jsRooms = [];
 const jsSocket = io.of('/jsQuestions');
