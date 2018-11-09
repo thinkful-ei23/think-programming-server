@@ -68,8 +68,8 @@ exports.handleReset = (socket, io, nsString) => {
   });
 };
 exports.handleWrong = (socket, io, nsString) => {
-  socket.on('WRONG', username => {
+  socket.on('WRONG', data => {
     console.log('Wrong Answer')
-    io.of(nsString).emit('WRONG', username);
+    io.of(nsString).emit('WRONG', data);
   });
 };
