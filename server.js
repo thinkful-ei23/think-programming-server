@@ -102,6 +102,9 @@ userSocket.on('connection', (socket) => {
   handleAllPlayers(socket, io, allRooms);
 });
 
+// Keep chat history
+let chatHistory = [];
+
 // Chatroom 
 const chatSocket = io.of('/chatroom');
 chatSocket.on('connection', (socket) => {
@@ -110,11 +113,11 @@ chatSocket.on('connection', (socket) => {
   socket.on('new message', (message, name) => {
     console.log(name, 'connected to chat');
     console.log('message: ', message);
-    
-    io.of('/chatroom').emit('new message', {
-      name: name,
-      message: message
-    });
+    let messageObj = {message, name};
+    console.log('`messageObj`: ', messageObj);
+    chatHistory.push(messageObj);
+    console.log('`chatHistory`: ', chatHistory);
+    io.of('/chatroom').emit('new message', chatHistory);
 
     // socket.broadcast.emit('new message', {
     //   name: name,
