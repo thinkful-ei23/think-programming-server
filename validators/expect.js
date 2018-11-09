@@ -17,8 +17,7 @@ module.exports = function(target){
   };
   obj.eql = function($val){
     if(this.target !== $val){
-      console.log(this.target, '<--- target', $val, '<---- val')
-      throw `"${this.target}" is not the expected value "${$val}"`;
+      return {answer: 'incorrect', message: `"${this.target}" is not the expected value "${$val}"`};
     }
   };
   obj.class = function($class){

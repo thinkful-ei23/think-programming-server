@@ -5,7 +5,7 @@ const UserStats = require('../../../models/userStats');
 
 module.exports = (jsString, res, userId, next) => { 
   console.log('js answer3 here', jsString); 
-  return Promise.all([evaluateFn(jsString, {array: [1,2], num: 3, newArray: [1,2.3] }, [1,2,3], res)])
+  return Promise.all([evaluateFn(jsString, { array: [1,2], num: 3 }, [1,2,3], res)])
     .then((result) => {
       if (result[0] === 'incorrect') {
         UserStats.findOne({ userId }, function(err, userStats) {
