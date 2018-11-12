@@ -102,26 +102,37 @@ userSocket.on('connection', (socket) => {
   handleAllPlayers(socket, io, allRooms);
 });
 
+// Keep chat history
+let chatHistory = [];
+
+// Storing only the 50 latest messages
+function checkStorage() {
+  if (chatHistory.length > 25) {
+    console.log('Hit max amount - if statement ran');
+    chatHistory = chatHistory.slice(1,26);
+  }
+};
+
 // Chatroom 
 const chatSocket = io.of('/chatroom');
 chatSocket.on('connection', (socket) => {
   console.log(socket.id, 'chatroom connection');
-  
+  // 1. New message from client gets stored in `chatHistory` array
+  // 2. Runs `checkStorage` 
+  // 3. Sends the chatHistory array to client
   socket.on('new message', (message, name) => {
     console.log(name, 'connected to chat');
-    console.log('message: ', message);
-    
-    io.of('/chatroom').emit('new message', {
-      name: name,
-      message: message
-    });
-
-    // socket.broadcast.emit('new message', {
-    //   name: name,
-    //   message: message
-    // });
+    console.log('`checkStorage` ran');
+    let messageObj = {message, name};
+    chatHistory.push(messageObj);
+    checkStorage();
+    io.of('/chatroom').emit('new message', chatHistory);
   });
 
+  // Sends the `chatHistory` array to client when component mounts
+  socket.on('get chat', () => {
+    io.of('/chatroom').emit('get chat', chatHistory);
+  });
 });
 
 // JavaScript Room Socket
