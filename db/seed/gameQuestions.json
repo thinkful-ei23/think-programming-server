@@ -1,63 +1,78 @@
 {
   "jsQuestions": [
     { 
+      "num": 0,
       "title": "Write A Function",
       "question": "Write a function called test, which takes a and b as arguments.  The function should return a"
     },
     {
+      "num": 1,
       "title": "Functions that Add",
       "question": "Write a function called add that takes two arguments, num1 and num2.  Return the product of the two arguments."
     },
     {
-      "title": "Pushing To an Array",
-      "question": "Code a function called 'pushArray' that takes an 'array' and a number as arguments.  The function should push the number to the array and return the array."
+      "num": 2,
+      "title": "Length of Arrays",
+      "question": "Code a function called 'arrayLength' that takes an 'array' as an argument.  The function should return the length of the array."
     },
     {
-      "title": "Join Two of Arrays",
-      "question": "Write a function called `twoToOne` which takes two arrays as arguments `arr1` and `arr2`.  It should return a new array containing the elements of the two arrays."
+      "num": 3,
+      "title": "Last Index of Array",
+      "question": "Write a function called `findLast` which takes an array as an argument. This function should return the last item in the array."
     },
     {
+      "num": 4,
       "title": "Count Characters in a String",
       "question": "Given a string input and a character, the function 'countCharacter' returns the number of occurrences of a given character in the given string."
     }
   ],
   "htmlQuestions": [{
+    "num": 0,
     "title": "Titles with h1",
     "question": "Using an h1 element write 'My first HTML title'"
   },
   {
+    "num": 1,
     "title": "Link To JQuery",
     "question": "Use script tags to link to the jQuery CDN.  Here is the address for the jQuery CDN: 'jquery-3.3.1.min.js'... hint! hint! use the src attribute to link the libary"
   },
   {
+    "num": 2,
     "title": "Add an HTML Link",
     "question": "Using an a element add a link to 'https://think-programming-client.herokuapp.com'. make the links text say 'Think Programming' and use the href attribute inside of the a tags."
   },
   {
+    "num": 3,
   "title": "Adding a class to an HTML element",
     "question": "Make an h2 element with a class of 'think-programming-title' and the text 'Think Programming'"
   }],
   "cssQuestions": [{
+    "num": 0,
     "title": "css Question1",
     "question": "this is css Question1. this is css Question1, this is css Question1"
   },
   {
+    "num": 1,
     "title": "css Question2",
     "question": "this is css Question2. this is css Question2. this is css Question2."
   },
   {
+    "num": 2,
     "title": "css Question3",
     "question": "this is css Question3. this is css Question3. this is css Question3."
   }],
   "dsaQuestions": [{
+    "num": 0,
     "title": "DSA Question 1",
     "question": "This is the first DSA Question. This is the first DSA Question. This is the first DSA Question. "
   },
   {
+    "num": 1,
     "title": "DSA Question 2",
     "question": "This is the second DSA Question. This is the second DSA Question. This is the second DSA Question. "
   }, 
   {
+    "num": 2,
     "title": "DSA Question 3",
     "question": "This is the third DSA Question. This is the third DSA Question. This is the third DSA Question. "
   }]

@@ -1,4 +1,5 @@
 'use strict';
+const GameQuestions = require('../models/gameQuestions');
 
 exports.handleGetPlayerArray = (socket, io, nsString, playersArray) => {
   socket.on('PLAYERS', data => {
@@ -56,10 +57,24 @@ exports.handlePlayerLeave = (socket, io, nsString, playersArray, allPlayersObjec
   });
 };
 exports.handleApprove = (socket, io, nsString) => {
-  socket.on('APPROVE', questionIndex => {
-    console.log('Approved');
-    questionIndex += 1;
-    io.of(nsString).emit('APPROVE', questionIndex);
+  socket.on('APPROVE', dataObject => {
+    dataObject.currentIndex += 1;
+    let num;
+    GameQuestions.findOne()
+      .then(result => {
+        num = result[`${dataObject.room}`].length;
+        if (dataObject.currentIndex >= num) {
+          dataObject.currentIndex = 0;
+          io.of(nsString).emit('APPROVE', dataObject.currentIndex);
+        } else {
+          io.of(nsString).emit('APPROVE', dataObject.currentIndex);
+        }
+      })
+      .catch(err => {
+        if (err.reason === 'Error GET /gameroom/questions') {
+          console.log(err.reason);
+        }
+      });
   });
 };
 exports.handleReset = (socket, io, nsString) => {
@@ -69,7 +84,7 @@ exports.handleReset = (socket, io, nsString) => {
 };
 exports.handleWrong = (socket, io, nsString) => {
   socket.on('WRONG', data => {
-    console.log('Wrong Answer')
+    console.log('Wrong Answer');
     io.of(nsString).emit('WRONG', data);
   });
 };
