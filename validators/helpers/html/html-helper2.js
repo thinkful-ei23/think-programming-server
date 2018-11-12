@@ -6,8 +6,7 @@ module.exports = {
   evaluateElement: function(answer, element, string) {
     const $ = cheerio.load(answer);
     expect($(element)).to.appear(1);
-    expect($(element).text()).to.eql(string);
-    expect($(element).attr('href'));
-    expect($(element).attr('href','https://think-programming-client.herokuapp.com'));
+    expect($(element).attr('src'));
+    expect($(element).attr('src')).to.eql('jquery-3.3.1.min.js');
   }
 };
