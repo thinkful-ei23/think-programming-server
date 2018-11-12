@@ -4,15 +4,13 @@ const mongoose = require('mongoose');
 const GameQuestions = require('../models/gameQuestions');
 const UserStats = require('../models/userStats');
 
-
-// const {evaluateFn} = require('../validators/helpers/javascript/javascript-helper1');
-// const {evaluateElement} = require('../validators/helpers/html/html-helper3');
-// const {evaluateCSSClass, evaluateCSSProperty} = require('../validators/helpers/css/css');
 const jsAnswer1 = require('../validators/evaluations/javascript/answer1');
 const jsAnswer2 = require('../validators/evaluations/javascript/answer2');
 const jsAnswer3 = require('../validators/evaluations/javascript/answer3');
 const jsAnswer4 = require('../validators/evaluations/javascript/answer4');
 const jsAnswer5 = require('../validators/evaluations/javascript/answer5');
+const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
+
 const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
@@ -43,10 +41,11 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   num = Number(num);
   const jsString = req.body.answer;
   
-  // Validating basic function characteristics 
+  // Validating answer has the word 'function' and at least two parenthesis
   let hasFunction = jsString.match(/(function)/g);
   let hasParenthesis = jsString.match(/[(\[][^\)\]]*?[)\]]/g);
-  // function to confirm answer has open and closing curly brackets
+  
+  // function to validate answer has open and closing curly brackets
   function findCurlyBrackets(string) {
     if (string.includes('{') && string.includes('}')) {
       return true;
@@ -54,6 +53,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   }
   let hasCurlyBraces = findCurlyBrackets(jsString);
   
+  // Below handles if users answer does not pass basic validation.  we subtract points and send back error
   if (hasFunction === null || hasParenthesis === null || hasCurlyBraces === false) {
     
     UserStats.findOne({ userId }, function(err, userStats) {
@@ -78,16 +78,64 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
         return res.status(err.code).json(err);
       });
   } else {
+    // Answer passed basic validation, and now we will run it through our test
+    
+    // Create reusable Promise for incorrect answers
+    const handleIncorrectJavaScriptPromise = new Promise(function(resolve, reject) {
+      resolve(handleJavaScriptIncorrect(userId));
+    });
+
+    // Based on question number we run try and catch to validate users answer.
     if (num === 0) {
-      jsAnswer1(jsString, res, userId, next);
+      try {
+        jsAnswer1(jsString, res, userId, next);
+      }
+      catch (e) {
+        handleIncorrectJavaScriptPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     } else if (num === 1) {
-      jsAnswer2(jsString, res, userId, next);
+      try {
+        jsAnswer2(jsString, res, userId, next);
+      }
+      catch (e) {
+        handleIncorrectJavaScriptPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     } else if (num === 2) {
-      jsAnswer3(jsString, res, userId, next);
+      try {
+        jsAnswer3(jsString, res, userId, next);
+      }
+      catch (e) {
+        handleIncorrectJavaScriptPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     } else if (num === 3) {
-      jsAnswer4(jsString, res, userId, next);
+      try {
+        jsAnswer4(jsString, res, userId, next);
+      }
+      catch (e) {
+        handleIncorrectJavaScriptPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     } else if (num === 4) {
-      jsAnswer5(jsString, res, userId, next);
+      try {
+        jsAnswer5(jsString, res, userId, next);
+      }
+      catch (e) {
+        handleIncorrectJavaScriptPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     }
   }
 });
