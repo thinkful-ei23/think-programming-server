@@ -15,7 +15,6 @@ exports.handleSit = (socket, io, nsString, playersArray, allPlayersObject) => {
     io.of(nsString).emit('SIT', data);
     io.of(nsString).emit('PLAYERS', playersArray);
     io.of('/dashboard').emit('ALL_PLAYERS',  allPlayersObject);
-    console.log('ALL PLAYERS OBJECT', allPlayersObject);
   });
 };
 exports.handleStand = (socket, io, nsString, playersArray, allPlayersObject) => {
@@ -84,7 +83,6 @@ exports.handleReset = (socket, io, nsString) => {
 };
 exports.handleWrong = (socket, io, nsString) => {
   socket.on('WRONG', data => {
-    console.log('Wrong Answer');
     io.of(nsString).emit('WRONG', data);
   });
 };
