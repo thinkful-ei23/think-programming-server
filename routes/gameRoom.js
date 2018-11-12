@@ -4,17 +4,20 @@ const mongoose = require('mongoose');
 const GameQuestions = require('../models/gameQuestions');
 const UserStats = require('../models/userStats');
 
+// Import JavaScript Validation function
 const jsAnswer1 = require('../validators/evaluations/javascript/answer1');
 const jsAnswer2 = require('../validators/evaluations/javascript/answer2');
 const jsAnswer3 = require('../validators/evaluations/javascript/answer3');
 const jsAnswer4 = require('../validators/evaluations/javascript/answer4');
 const jsAnswer5 = require('../validators/evaluations/javascript/answer5');
-const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
-
+// Import HTML Validation functions
 const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
 const htmlAnswer4 = require('../validators/evaluations/html/answer4');
+// Import handle incorrect answer functions
+const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
+const { handleHTMLIncorrect } = require('../validators/validator-results/html/answer-incorrect');
 
 const router = express.Router();
 
@@ -60,11 +63,11 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       userStats.totalPoints = userStats.totalPoints -= 25;
       userStats.totalAnswered = userStats.totalAnswered += 1;
       userStats.totalIncorrect = userStats.totalIncorrect += 1;
-      userStats.correctPercentage = userStats.totalCorrect/userStats.totalAnswered * 100;
+      userStats.correctPercentage = (userStats.totalCorrect/userStats.totalAnswered * 100).toFixed(2);
       userStats.javascriptTotalPoints = userStats.javascriptTotalPoints -= 25;
       userStats.javascriptTotalAnswered = userStats.javascriptTotalAnswered += 1;
       userStats.javascriptTotalIncorrect += 1;
-      userStats.javascriptCorrectPercentage = userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100; 
+      userStats.javascriptCorrectPercentage = (userStats.javascriptTotalCorrect/userStats.javascriptTotalAnswered * 100).toFixed(2); 
       userStats.save(function(err) {
         if(err) {
           console.log('ERROR! Updating User Stats');
@@ -149,6 +152,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
   // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
   const htmlString = req.body.answer;
   let htmlElementTest = htmlString.match(/(?:<[^>]*>)/g);
+  
   if (htmlElementTest === null || htmlElementTest.length < 2) {
     UserStats.findOne({ userId }, function(err, userStats) {
       userStats.totalPoints = userStats.totalPoints -= 25;
@@ -160,20 +164,56 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       });
     })
       .then(result => {
-        res.json({error: true, message: 'answer not valid html'});
+        res.json({ error: true, message: 'answer not valid html' });
       })
       .catch(err => {
         return res.status(err.code).json(err);
       });
   } else {
+    // Create reusable Promise for incorrect answers
+    const handleIncorrectHTMLPromise = new Promise(function(resolve, reject) {
+      resolve(handleHTMLIncorrect(userId));
+    });
     if (num === 0) {
-      htmlAnswer1(htmlString, res, userId);
+      try {
+        htmlAnswer1(htmlString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
     } else if (num === 1) {
-      htmlAnswer2(htmlString, res, userId);
+      try {
+        htmlAnswer2(htmlString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
     } else if (num === 2) {
-      htmlAnswer3(htmlString, res, userId);
+      try {
+        htmlAnswer3(htmlString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
     } else if (num === 3) {
-      htmlAnswer4(htmlString, res, userId);
+      try {
+        htmlAnswer4(htmlString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
     }
   }
 });

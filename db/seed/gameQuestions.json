@@ -39,7 +39,7 @@
   {
     "num": 2,
     "title": "Add an HTML Link",
-    "question": "Using an a element add a link to 'https://think-programming-client.herokuapp.com'. make the links text say 'Think Programming' and use the href attribute inside of the a tags."
+    "question": "Using an `a` element add a link to 'https://think-programming-client.herokuapp.com'. make the links text say 'Think Programming' and use the href attribute inside of the a tags."
   },
   {
     "num": 3,
