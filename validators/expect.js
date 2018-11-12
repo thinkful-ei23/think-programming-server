@@ -7,6 +7,7 @@ module.exports = function(target){
   obj.be = obj;
   obj.appear = function($length){
     if(this.target.length !== $length){
+      console.log('Not breaking when I should');
       throw `appears ${this.target.length} times, not the expected ${$length} times`;
     }
   };
