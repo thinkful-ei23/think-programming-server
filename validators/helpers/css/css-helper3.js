@@ -5,7 +5,7 @@ module.exports = {
   evaluateElement: function(answer) {
     let newAnswer = answer.replace(/\s/g, '');
 
-    if (newAnswer === 'background-color') {
+    if (newAnswer === 'font-size') {
       return true;
     } else {
       throw(`${answer} is not the correct property to change the background color`); 

@@ -21,6 +21,9 @@ const htmlAnswer5 = require('../validators/evaluations/html/answer5');
 // Import CSS Validation functions
 const cssAnswer1 = require('../validators/evaluations/css/answer1');
 const cssAnswer2 = require('../validators/evaluations/css/answer2');
+const cssAnswer3 = require('../validators/evaluations/css/answer3');
+const cssAnswer4 = require('../validators/evaluations/css/answer4');
+const cssAnswer5 = require('../validators/evaluations/css/answer5');
 
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
@@ -318,7 +321,17 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
             res.json({error: true, message: 'answer is incorrect'});
           });
       } 
-    }
+    } else if (num === 4) {
+      try {
+        cssAnswer5(cssString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectCSSPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
+    } 
   }
 });
 

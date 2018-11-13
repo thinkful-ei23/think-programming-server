@@ -58,13 +58,23 @@
   },
   {
     "num": 1,
-    "title": "Background color",
-    "question": "Which property is used to change the background color? (Options: color, background, background-color, or bgcolor)"
+    "title": "Background Color",
+    "question": "Which property is used to change the background color? (Options: color, background, background-color, bgcolor)"
   },
   {
     "num": 2,
-    "title": "css Question3",
-    "question": "this is css Question3. this is css Question3. this is css Question3."
+    "title": "Text Size",
+    "question": "Which CSS property controls the text size? (Options: text-style, font-style, font-size, text-size)"
+  }, 
+  {
+    "num": 3,
+    "title": "<p> Element",
+    "question": "Use the correct CSS syntax to make all the <p> elements bold"
+  },
+  {
+    "num": 4,
+    "title": "Position Property",
+    "question": "What is the default value of the position property? (Options: relative, absolute, static, fixed)"
   }],
   "dsaQuestions": [{
     "num": 0,
