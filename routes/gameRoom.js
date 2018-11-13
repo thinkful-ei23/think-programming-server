@@ -15,6 +15,7 @@ const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
 const htmlAnswer4 = require('../validators/evaluations/html/answer4');
+const htmlAnswer5 = require('../validators/evaluations/html/answer5');
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
 const { handleHTMLIncorrect } = require('../validators/validator-results/html/answer-incorrect');
@@ -216,6 +217,16 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
             res.json({error: true, message: 'answer is incorrect'});
           });
       } 
+    } else if (num === 4) { 
+      try {
+        htmlAnswer5(htmlString, res, userId); 
+      }
+      catch (e) {
+        handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      }
     }
   }
 });
