@@ -10,12 +10,17 @@ const jsAnswer2 = require('../validators/evaluations/javascript/answer2');
 const jsAnswer3 = require('../validators/evaluations/javascript/answer3');
 const jsAnswer4 = require('../validators/evaluations/javascript/answer4');
 const jsAnswer5 = require('../validators/evaluations/javascript/answer5');
+
 // Import HTML Validation functions
 const htmlAnswer1 = require('../validators/evaluations/html/answer1');
 const htmlAnswer2 = require('../validators/evaluations/html/answer2');
 const htmlAnswer3 = require('../validators/evaluations/html/answer3');
 const htmlAnswer4 = require('../validators/evaluations/html/answer4');
 const htmlAnswer5 = require('../validators/evaluations/html/answer5');
+
+// Import CSS Validation functions
+const cssAnswer1 = require('../validators/evaluations/css/answer1');
+
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
 const { handleHTMLIncorrect } = require('../validators/validator-results/html/answer-incorrect');
@@ -251,7 +256,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
   }
   let hasCurlyBraces = findCurlyBrackets(cssString);
   
-  if (cssElementTest === null || cssElementTest.length < 2 || hasCurlyBraces === false) {
+  if (cssString === null) {
     UserStats.findOne({ userId }, function(err, userStats) {
       userStats.totalPoints = userStats.totalPoints -= 25;
       userStats.cssTotalPoints = userStats.cssTotalPoints -= 25; 

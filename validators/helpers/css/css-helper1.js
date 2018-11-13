@@ -9,7 +9,7 @@ module.exports = {
     if (answer[0] === '/' && answer[1] === '*' && answer[answer.length-1] === '/' && answer[answer.length-2] === '*') {
       return true;
     } else {
-      return false;
+      throw(`${answer} doesn't contain the expected syntax`); 
     }
   }
   // evaluateCSSClass: function(answer, _class) {
