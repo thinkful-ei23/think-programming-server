@@ -20,6 +20,7 @@ const htmlAnswer5 = require('../validators/evaluations/html/answer5');
 
 // Import CSS Validation functions
 const cssAnswer1 = require('../validators/evaluations/css/answer1');
+const cssAnswer2 = require('../validators/evaluations/css/answer2');
 
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');

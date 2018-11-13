@@ -58,8 +58,8 @@
   },
   {
     "num": 1,
-    "title": "",
-    "question": "this is css Question2. this is css Question2. this is css Question2."
+    "title": "Background color",
+    "question": "Which property is used to change the background color? (Options: color, background, background-color, or bgcolor)"
   },
   {
     "num": 2,

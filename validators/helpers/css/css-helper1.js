@@ -6,7 +6,11 @@ module.exports = {
     // const $ = cheerio.load(answer);
     // expect($(element)).to.appear(1);
     // expect($(element).text()).to.eql(string);
-    if (answer[0] === '/' && answer[1] === '*' && answer[answer.length-1] === '/' && answer[answer.length-2] === '*') {
+
+    // Remove all white space
+    let newAnswer = answer.replace(/\s/g, '');
+
+    if (newAnswer[0] === '/' && newAnswer[1] === '*' && newAnswer[newAnswer.length-1] === '/' && newAnswer[newAnswer.length-2] === '*') {
       return true;
     } else {
       throw(`${answer} doesn't contain the expected syntax`); 
