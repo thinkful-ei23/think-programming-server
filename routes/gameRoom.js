@@ -18,6 +18,7 @@ const htmlAnswer4 = require('../validators/evaluations/html/answer4');
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
 const { handleHTMLIncorrect } = require('../validators/validator-results/html/answer-incorrect');
+const { handleCSSIncorrect } = require('../validators/validator-results/css/answer-incorrect');
 
 const router = express.Router();
 
@@ -37,6 +38,7 @@ router.get('/questions',(req,res,next)=>{
       next(err);
     });
 });
+
 /*======POST /answers Endpoint JavaScript Answers=====*/
 router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   const userId = req.user._id;
@@ -210,6 +212,91 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       }
       catch (e) {
         handleIncorrectHTMLPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
+    }
+  }
+});
+
+/*======POST /answers Endpoint CSS Answers=====*/
+router.post('/answers/cssQuestions/:num', (req,res,next) => {
+  const userId = req.user._id;
+  let { num } = req.params;
+  num = Number(num);
+  
+  // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
+  const cssString = req.body.answer;
+  
+  // may not need --
+  let cssElementTest = cssString.match(/(?:<[^>]*>)/g);
+
+  // function to validate answer has open and closing curly brackets
+  function findCurlyBrackets(string) {
+    if (string.includes('{') && string.includes('}')) {
+      return true;
+    }
+  }
+  let hasCurlyBraces = findCurlyBrackets(cssString);
+  
+  if (cssElementTest === null || cssElementTest.length < 2 || hasCurlyBraces === false) {
+    UserStats.findOne({ userId }, function(err, userStats) {
+      userStats.totalPoints = userStats.totalPoints -= 25;
+      userStats.cssTotalPoints = userStats.cssTotalPoints -= 25; 
+      userStats.save(function(err) {
+        if(err) {
+          console.log('ERROR! Updating User Stats');
+        }
+      });
+    })
+      .then(result => {
+        res.json({ error: true, message: 'answer not valid css' });
+      })
+      .catch(err => {
+        return res.status(err.code).json(err);
+      });
+  } else {
+    // Create reusable Promise for incorrect answers
+    const handleIncorrectCSSPromise = new Promise(function(resolve, reject) {
+      resolve(handleCSSIncorrect(userId));
+    });
+    if (num === 0) {
+      try {
+        cssAnswer1(cssString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectCSSPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
+    } else if (num === 1) {
+      try {
+        cssAnswer2(cssString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectCSSPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
+    } else if (num === 2) {
+      try {
+        cssAnswer3(cssString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectCSSPromise
+          .then(() => {
+            res.json({error: true, message: 'answer is incorrect'});
+          });
+      } 
+    } else if (num === 3) {
+      try {
+        cssAnswer4(cssString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectCSSPromise
           .then(() => {
             res.json({error: true, message: 'answer is incorrect'});
           });
