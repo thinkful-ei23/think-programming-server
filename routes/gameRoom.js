@@ -87,7 +87,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       });
     })
       .then(result => {
-        res.json({error: true, message: 'answer not a valid function'});
+        res.json({error: true, message: 'Answer not a valid function'});
       })
       .catch(err => {
         return res.status(err.code).json(err);
@@ -108,7 +108,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectJavaScriptPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     } else if (num === 1) {
@@ -118,7 +118,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectJavaScriptPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     } else if (num === 2) {
@@ -128,7 +128,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectJavaScriptPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     } else if (num === 3) {
@@ -138,7 +138,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectJavaScriptPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     } else if (num === 4) {
@@ -148,7 +148,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectJavaScriptPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     }
@@ -176,7 +176,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       });
     })
       .then(result => {
-        res.json({ error: true, message: 'answer not valid html' });
+        res.json({ error: true, message: 'Answer not valid html' });
       })
       .catch(err => {
         return res.status(err.code).json(err);
@@ -193,7 +193,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectHTMLPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 1) {
@@ -203,7 +203,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectHTMLPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 2) {
@@ -213,7 +213,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectHTMLPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 3) {
@@ -223,7 +223,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectHTMLPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 4) { 
@@ -233,7 +233,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
       catch (e) {
         handleIncorrectHTMLPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       }
     }
@@ -271,7 +271,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       });
     })
       .then(result => {
-        res.json({ error: true, message: 'answer not valid css' });
+        res.json({ error: true, message: 'Answer cannot be blank' });
       })
       .catch(err => {
         return res.status(err.code).json(err);
@@ -288,7 +288,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       catch (e) {
         handleIncorrectCSSPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 1) {
@@ -298,7 +298,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       catch (e) {
         handleIncorrectCSSPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 2) {
@@ -308,7 +308,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       catch (e) {
         handleIncorrectCSSPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 3) {
@@ -318,7 +318,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       catch (e) {
         handleIncorrectCSSPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } else if (num === 4) {
@@ -328,7 +328,7 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       catch (e) {
         handleIncorrectCSSPromise
           .then(() => {
-            res.json({error: true, message: 'answer is incorrect'});
+            res.json({error: true, message: 'Answer is incorrect'});
           });
       } 
     } 
