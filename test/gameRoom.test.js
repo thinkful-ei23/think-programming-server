@@ -22,7 +22,11 @@ chai.use(chaiHttp);
 describe('Think Programming API - GameRoom Endpoint', function () {
 
   before(function () {
-    return mongoose.connect(TEST_MONGODB_URI)
+    var options = {
+      server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+      replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+    };
+    return mongoose.connect(TEST_MONGODB_URI, options)
       .then(() => mongoose.connection.db.dropDatabase());
   });
   let token;
