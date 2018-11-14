@@ -335,17 +335,6 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
     return next(err);
   }
   
-  // may not need --
-  let cssElementTest = cssString.match(/(?:<[^>]*>)/g);
-
-  // function to validate answer has open and closing curly brackets
-  function findCurlyBrackets(string) {
-    if (string.includes('{') && string.includes('}')) {
-      return true;
-    }
-  }
-  let hasCurlyBraces = findCurlyBrackets(cssString);
-  
   if (cssString === null) {
     UserStats.findOne({ userId }, function(err, userStats) {
       userStats.totalPoints = userStats.totalPoints -= 25;

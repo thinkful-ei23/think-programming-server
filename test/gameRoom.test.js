@@ -28,7 +28,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
     };
     return mongoose.connect(TEST_MONGODB_URI, options);
   });
-
+  let userId = "000000000000000000000001";
   let token;
   let user;
   
@@ -48,7 +48,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
   });
 
   afterEach(function () {
-    return mongoose.connection.db.dropDatabase();
+      return mongoose.connection.db.dropDatabase();
   });
 
   after(async function () {
@@ -359,7 +359,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Challenge completed');
           });
       });
-      it('should return `error: false` and `message: Challenge completed` when sening a different function name', function () {
+      it('should return `error: false` and `message: Challenge completed` when sending different function name', function () {
         const answer = 'function diff(num1, num2) {return num1 * num2}';
         const index = 1;
         let res;
@@ -377,7 +377,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Challenge completed');
           });
       });
-      it('should return `error: false` and `message: Challenge completed` when sening a different `argument names`', function () {
+      it('should return `error: false` and `message: Challenge completed` when sending  different `argument names`', function () {
         const answer = 'function add(a, b) {return a * b}';
         const index = 1;
         let res;
@@ -436,22 +436,32 @@ describe('Think Programming API - GameRoom Endpoint', function () {
       // "title": "Length of Arrays",
       // "question": "Code a function called 'arrayLength' that takes an 'array' as an argument.  The function should return the length of the array."
       it('should return `error: false` and `message: Challenge completed` for correct answer', function () {
+        let dataBefore;
         const answer = 'function arrayLength(array) {return array.length;}';
         const index = 2;
         let res;
-        return chai
+        return Promise.all([
+          UserStats.findOne({ userId }),
+          chai
           .request(app)
           .post(`/api/gameroom/answers/jsQuestions/${index}`)
           .set('Authorization', `Bearer ${token}`)
           .send({answer})
-          .then(_res => {
-            res = _res;
+        ])
+        .then(([data, res]) => {
             expect(res).to.have.status(200);
             expect(res.body).to.be.an('object');
             expect(res.body).to.have.all.keys('error', 'message');
             expect(res.body.error).to.eql(false);
             expect(res.body.message).to.eql('Challenge completed');
-          });
+            dataBefore = data;
+            return UserStats.findOne({ userId})
+          })
+        .then(dataAfter => {
+          expect(dataBefore.userId).to.eql(dataAfter.userId);
+          expect(dataBefore.id).to.eql(dataAfter.id);
+          expect(dataBefore.username).to.eql(dataAfter.username);
+        }) 
       });
       it('should return `error: false` and `message: Challenge completed` when sening a different function name', function () {
         const answer = 'function diffName(array) {return array.length;}';
@@ -469,6 +479,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body).to.have.all.keys('error', 'message');
             expect(res.body.error).to.eql(false);
             expect(res.body.message).to.eql('Challenge completed');
+
           });
       });
       it('should return `error: false` and `message: Challenge completed` when sening a different `argument names`', function () {
