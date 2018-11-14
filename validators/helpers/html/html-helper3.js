@@ -8,6 +8,6 @@ module.exports = {
     expect($(element)).to.appear(1);
     expect($(element).text()).to.eql(string);
     expect($(element).attr('href'));
-    expect($(element).attr('href', linkString));
+    expect($(element).attr('href')).to.eql(linkString);
   }
 };
