@@ -49,9 +49,9 @@ describe('Think Programming API - GameRoom Endpoint', function () {
       });
   });
 
-  afterEach(function () {
-    return mongoose.connection.db.dropDatabase();
-  });
+  // afterEach(function () {
+  //   return mongoose.connection.db.dropDatabase();
+  // });
 
   after(function () {
     return mongoose.disconnect();
@@ -78,7 +78,7 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body).to.have.all.keys('num', 'title', 'question');
             expect(res.body.num).to.equal(0);
             expect(res.body.title).to.equal('Write A Function');
-            expect(res.body.question).to.equal('Write a function called test, which takes a and b as arguments.  The function should return a');
+            expect(res.body.question).to.equal('Write a function called \'test\' which takes a and b as arguments.  The function should return a');
           });
       });      
     });
