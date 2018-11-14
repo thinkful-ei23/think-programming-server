@@ -7,6 +7,7 @@ module.exports = {
     const $ = cheerio.load(answer);
     expect($(element)).to.appear(1);
     expect($(element).text()).to.eql(string);
-    expect($(element).attr('class','think-programming-title'));
+    expect($(element).attr('class'));
+    expect($(element).attr('class')).to.eql('think-programming-title');
   }
 };

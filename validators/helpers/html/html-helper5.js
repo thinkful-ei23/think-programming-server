@@ -10,7 +10,7 @@ module.exports = {
     expect($(element).children().first().text()).to.eql('learn to program');
     expect($(element).children().first().attr('key')).to.eql('1');
     expect($(element).children().last().text()).to.eql('become a developer');
-    expect($(element).children().first().attr('key')).to.eql('2');
+    expect($(element).children().last().attr('key')).to.eql('2');
     expect($(element).find('li').length).to.eql(2);
   }
 };

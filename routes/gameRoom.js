@@ -36,12 +36,29 @@ const router = express.Router();
 router.get('/questions',(req,res,next)=>{
   
   let { question, num } = req.query;
+  if (!num) {
+    const err = new Error('missing `question number` in request');
+    err.status = 400;
+    return next(err);
+  }
   num = Number(num);
+  if (!question) {
+    const err = new Error('missing `questionType` in request');
+    err.status = 400;
+    return next(err);
+  }
+  // Validate question type exists
+  if (['jsQuestions', 'htmlQuestions', 'cssQuestions', 'dsaQuestions'].indexOf(question) === -1) {
+    const err = new Error('bad request: `question type` requested does not exist');
+    err.status = 400;
+    return next(err);
+  }
   GameQuestions.findOne()
     .then(result => {
       res.json(result[`${question}`][num]);
     })
     .catch(err => {
+      console.log(err);
       if (err.reason === 'Error GET /gameroom/questions') {
         return res.status(err.code).json(err);
       }
@@ -52,10 +69,28 @@ router.get('/questions',(req,res,next)=>{
 /*======POST /answers Endpoint JavaScript Answers=====*/
 router.post('/answers/jsQuestions/:num',(req,res,next)=>{
   const userId = req.user._id;
+  
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+
   let { num } = req.params;
-  num = Number(num);
+  num = (num - 0);
   const jsString = req.body.answer;
   
+  if (num === null || num === undefined) {
+    const err = new Error('missing `number` in request');
+    err.status = 400;
+    return next(err);
+  }
+  if (!jsString) {
+    const err = new Error('missing `answer` in request');
+    err.status = 400;
+    return next(err);
+  }
+
   // Validating answer has the word 'function' and at least two parenthesis
   let hasFunction = jsString.match(/(function)/g);
   let hasParenthesis = jsString.match(/[(\[][^\)\]]*?[)\]]/g);
@@ -160,9 +195,28 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
   const userId = req.user._id;
   let { num } = req.params;
   num = Number(num);
-  
-  // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
   const htmlString = req.body.answer;
+  
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+  if (num === null || num === undefined || isNaN(num)) {
+    const err = new Error('missing `number` in request');
+    err.location = 'POST api/gameRoom/answers/htmlQuestions/:num';
+    err.status = 400;
+    return next(err);
+  }
+  if (!htmlString) {
+    const err = new Error('missing `answer` in request');
+    err.location = 'POST api/gameRoom/answers/htmlQuestions/:num';
+    err.status = 400;
+    return next(err);
+  }
+
+  // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
+  
   let htmlElementTest = htmlString.match(/(?:<[^>]*>)/g);
   
   if (htmlElementTest === null || htmlElementTest.length < 2) {
@@ -236,6 +290,11 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
             res.json({error: true, message: 'Answer is incorrect'});
           });
       }
+    } else {
+      const err = new Error('question number does not exist');
+      err.location = 'POST api/gameRoom/answers/htmlQuestions/:num';
+      err.status = 400;
+      return next(err);
     }
   }
 });
@@ -248,6 +307,25 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
   
   // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
   const cssString = req.body.answer;
+
+  // Basic Validation
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    return next(err);
+  }
+  if (num === null || num === undefined || isNaN(num)) {
+    const err = new Error('missing `number` in request');
+    err.location = 'POST api/gameRoom/answers/cssQuestions/:num';
+    err.status = 400;
+    return next(err);
+  }
+  if (!cssString) {
+    const err = new Error('missing `answer` in request');
+    err.location = 'POST api/gameRoom/answers/cssQuestions/:num';
+    err.status = 400;
+    return next(err);
+  }
   
   // may not need --
   let cssElementTest = cssString.match(/(?:<[^>]*>)/g);
@@ -344,8 +422,16 @@ router.post('/judgment/:room',(req,res,next)=>{
     err.status = 400;
     return next(err);
   }
-
+  
   let { room } = req.params;
+  console.log(room);
+  // Validate question type exists
+  if (['jsQuestions', 'htmlQuestions', 'cssQuestions', 'dsaQuestions'].indexOf(room) === -1) {
+    const err = new Error('bad request: `room` requested does not exist');
+    err.status = 400;
+    err.location = 'POST api/gameRoom/judgment/:room';
+    return next(err);
+  }
   const verdict = req.body.answer;
   // Increment/Decrement Total Points + RoomType points
   if (room === 'jsQuestions') {

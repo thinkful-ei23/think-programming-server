@@ -78,8 +78,8 @@
   }],
   "dsaQuestions": [{
     "num": 0,
-    "title": "DSA Question 1",
-    "question": "This is the first DSA Question. This is the first DSA Question. This is the first DSA Question. "
+    "title": "Constant Time",
+    "question": "What is the constant time complexity in terms of Big-O notation?"
   },
   {
     "num": 1,
