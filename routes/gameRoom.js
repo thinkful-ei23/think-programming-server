@@ -25,10 +25,18 @@ const cssAnswer3 = require('../validators/evaluations/css/answer3');
 const cssAnswer4 = require('../validators/evaluations/css/answer4');
 const cssAnswer5 = require('../validators/evaluations/css/answer5');
 
+// Import dsa Validation functions
+const dsaAnswer1 = require('../validators/evaluations/dsa/answer1');
+const dsaAnswer2 = require('../validators/evaluations/dsa/answer2');
+const dsaAnswer3 = require('../validators/evaluations/dsa/answer3');
+const dsaAnswer4 = require('../validators/evaluations/dsa/answer4');
+const dsaAnswer5 = require('../validators/evaluations/dsa/answer5');
+
 // Import handle incorrect answer functions
 const { handleJavaScriptIncorrect } = require('../validators/validator-results/javascript/answer-incorrect');
 const { handleHTMLIncorrect } = require('../validators/validator-results/html/answer-incorrect');
 const { handleCSSIncorrect } = require('../validators/validator-results/css/answer-incorrect');
+const { handleDSAIncorrect } = require('../validators/validator-results/dsa/answer-incorrect');
 
 const router = express.Router();
 
@@ -327,6 +335,103 @@ router.post('/answers/cssQuestions/:num', (req,res,next) => {
       }
       catch (e) {
         handleIncorrectCSSPromise
+          .then(() => {
+            res.json({error: true, message: 'Answer is incorrect'});
+          });
+      } 
+    } 
+  }
+});
+
+/*======POST /answers Endpoint dsa Answers=====*/
+router.post('/answers/dsaQuestions/:num', (req,res,next) => {
+  console.log('dsa routing');
+
+  const userId = req.user._id;
+  let { num } = req.params;
+  num = Number(num);
+  
+  // If user sends bad answer we don't want to create error.  we want to record the bad answer and let the other user judge.  but either way both users will not be able to go to the next question.
+  const dsaString = req.body.answer;
+  
+  // // may not need --
+  // let dsaElementTest = dsaString.match(/(?:<[^>]*>)/g);
+
+  // // function to validate answer has open and closing curly brackets
+  // function findCurlyBrackets(string) {
+  //   if (string.includes('{') && string.includes('}')) {
+  //     return true;
+  //   }
+  // }
+  // let hasCurlyBraces = findCurlyBrackets(cssString);
+  
+  if (dsaString === null) {
+    UserStats.findOne({ userId }, function(err, userStats) {
+      userStats.totalPoints = userStats.totalPoints -= 25;
+      userStats.dsaTotalPoints = userStats.dsaTotalPoints -= 25; 
+      userStats.save(function(err) {
+        if(err) {
+          console.log('ERROR! Updating User Stats');
+        }
+      });
+    })
+      .then(result => {
+        res.json({ error: true, message: 'Answer cannot be blank' });
+      })
+      .catch(err => {
+        return res.status(err.code).json(err);
+      });
+  } else {
+    // Create reusable Promise for incorrect answers
+    const handleIncorrectDSAPromise = new Promise(function(resolve, reject) {
+      resolve(handleDSAIncorrect(userId));
+    });
+    if (num === 0) {
+      try {
+        dsaAnswer1(dsaString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectDSAPromise
+          .then(() => {
+            res.json({error: true, message: 'Answer is incorrect'});
+          });
+      } 
+    } else if (num === 1) {
+      try {
+        dsaAnswer2(dsaString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectDSAPromise
+          .then(() => {
+            res.json({error: true, message: 'Answer is incorrect'});
+          });
+      } 
+    } else if (num === 2) {
+      try {
+        dsaAnswer3(dsaString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectDSAPromise
+          .then(() => {
+            res.json({error: true, message: 'Answer is incorrect'});
+          });
+      } 
+    } else if (num === 3) {
+      try {
+        dsaAnswer4(dsaString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectDSAPromise
+          .then(() => {
+            res.json({error: true, message: 'Answer is incorrect'});
+          });
+      } 
+    } else if (num === 4) {
+      try {
+        dsaAnswer5(dsaString, res, userId);
+      }
+      catch (e) {
+        handleIncorrectDSAPromise
           .then(() => {
             res.json({error: true, message: 'Answer is incorrect'});
           });
