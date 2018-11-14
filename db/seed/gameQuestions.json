@@ -3,12 +3,12 @@
     { 
       "num": 0,
       "title": "Write A Function",
-      "question": "Write a function called test, which takes a and b as arguments.  The function should return a"
+      "question": "Write a function called 'test' which takes a and b as arguments.  The function should return a"
     },
     {
       "num": 1,
       "title": "Functions that Add",
-      "question": "Write a function called add that takes two arguments, num1 and num2.  Return the product of the two arguments."
+      "question": "Write a function called 'add' that takes two arguments, num1 and num2.  Return the product of the two arguments."
     },
     {
       "num": 2,
@@ -83,12 +83,23 @@
   },
   {
     "num": 1,
-    "title": "DSA Question 2",
-    "question": "This is the second DSA Question. This is the second DSA Question. This is the second DSA Question. "
+    "title": "Bubble Sort",
+    "question": "What is the average time complexity of Bubble sort? (Options: O(1), O(n), O(n^2), O(log n))"
   }, 
   {
     "num": 2,
-    "title": "DSA Question 3",
-    "question": "This is the third DSA Question. This is the third DSA Question. This is the third DSA Question. "
-  }]
+    "title": "Quick Sort",
+    "question": "What is the average time complexity of Quick sort? (Options: O(1), O(n), O(n^2), O(n log(n))"
+  },
+  {
+    "num": 3,
+    "title": "Determine the Big O",
+    "question": "You are in a room with 15 puppies to find a playmate for your puppy who is of the same breed. You start with the first puppy to check if he is a samoyed. He was not, so you move on to the next puppy, and the next, and the next until you find a samoyed or until there is no more puppies to check."
+  }, 
+  {
+    "num": 4,
+    "title": "Big O",
+    "question": "Big O measures algorithm speed in terms of... (Options: Space, Memory, Seconds, Growth of the number of operations)"
+  }
+]
 }
