@@ -20,43 +20,80 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('Think Programming API - GameRoom Endpoint', function () {
-
-  before(function () {
-    var options = {
-      server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-      replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
-    };
-    return mongoose.connect(TEST_MONGODB_URI, options);
+  before(async function () {
+    // var options = {
+    //   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+    //   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+    // };
+    return await mongoose.connect(TEST_MONGODB_URI).then(() => mongoose.connection.db.dropDatabase());
   });
   let userId = "000000000000000000000001";
   let token;
   let user;
   
   beforeEach(async function () {
-    await mongoose.connection.db.dropDatabase()
-    const promises = await Promise.all([
-          User.insertMany(seedUsers),
-          GameQuestions.insertMany(seedQuestions),
-          UserStats.insertMany(seedStats),
-          User.createIndexes(),
-          GameQuestions.createIndexes(),
-          UserStats.createIndexes()
-        ]);
-    const users = promises[0];
-    user = users[0];
-    token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
+    return await Promise.all([
+      User.insertMany(seedUsers),
+      GameQuestions.insertMany(seedQuestions),
+      UserStats.insertMany(seedStats)
+    ])
+    .then(([users]) => {
+      Promise.all([
+        User.createIndexes(),
+        GameQuestions.createIndexes(),
+        UserStats.createIndexes()
+      ]);
+      return users;
+    })
+    .then(users => {
+      user = users[0];
+      token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
+    });
   });
 
   afterEach(function () {
-      return mongoose.connection.db.dropDatabase();
+    return mongoose.connection.db.dropDatabase();
   });
 
-  after(async function () {
-    await User.ensureIndexes(),
-    await GameQuestions.ensureIndexes(),
-    await UserStats.ensureIndexes()
+  after(function () {
     return mongoose.disconnect();
   });
+  // before(function () {
+  //   var options = {
+  //     server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+  //     replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+  //   };
+  //   return mongoose.connect(TEST_MONGODB_URI, options);
+  // });
+  // let userId = "000000000000000000000001";
+  // let token;
+  // let user;
+  
+  // beforeEach(async function () {
+  //   await mongoose.connection.db.dropDatabase()
+  //   const promises = await Promise.all([
+  //         User.insertMany(seedUsers),
+  //         GameQuestions.insertMany(seedQuestions),
+  //         UserStats.insertMany(seedStats),
+  //         User.createIndexes(),
+  //         GameQuestions.createIndexes(),
+  //         UserStats.createIndexes()
+  //       ]);
+  //   const users = promises[0];
+  //   user = users[0];
+  //   token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
+  // });
+
+  // afterEach(function () {
+  //     return mongoose.connection.db.dropDatabase();
+  // });
+
+  // after(async function () {
+  //   await User.ensureIndexes(),
+  //   await GameQuestions.ensureIndexes(),
+  //   await UserStats.ensureIndexes()
+  //   return mongoose.disconnect();
+  // });
   /*=====GAMEROOM ENDPOINT=====*/
 
   /*=====GET: Questions=====*/
