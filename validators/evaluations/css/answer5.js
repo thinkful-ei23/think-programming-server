@@ -22,7 +22,7 @@ module.exports = (cssString, res, userId) => {
           }
         });
       });
-      res.json({error: false, message: 'Challenge completed'}).end();
+      res.json({error: false, message: 'Correct! Challenge Completed! +100 Total Points, +100 CSS Points!'}).end();
     })
     .catch(e => {
       console.log(e);
