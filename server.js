@@ -99,7 +99,7 @@ userSocket.on('connection', (socket) => {
   console.log(socket.id, 'dashboard connection');
   handleUsers(socket, io, totalUsers);
   handleUserLogout(socket, io, totalUsers);
-  handleAllPlayers(socket, io, allRooms, totalUsers);
+  handleAllPlayers(socket, io, allRooms);
 });
 
 // Keep chat history

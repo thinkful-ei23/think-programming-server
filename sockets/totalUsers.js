@@ -24,7 +24,7 @@ exports.handleUserLogout = (socket, io, totalUsersArray) => {
   });
 };
 
-exports.handleAllPlayers = (socket, io, allPlayersObject, totalUsers) => {
+exports.handleAllPlayers = (socket, io, allPlayersObject) => {
   socket.on('ALL_PLAYERS', incoming => {
     io.of('/dashboard').emit('ALL_PLAYERS', allPlayersObject);
   });
