@@ -22,7 +22,7 @@ module.exports = (jsString, res, userId, next) => {
           }
         });
       });
-      res.json({error: false, message: 'Challenge completed'}).end();
+      res.json({error: false, message: 'You are Correct! Challenge Completed! +100 Total Points! + 100 Javascript Points!'}).end();
     })
     .catch(e => {
       console.log(e);

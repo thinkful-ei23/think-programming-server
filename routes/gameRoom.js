@@ -531,33 +531,27 @@ router.post('/judgment/:room',(req,res,next)=>{
   // Increment/Decrement Total Points + RoomType points
   if (room === 'jsQuestions') {
     if (verdict === 'correct') {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints += 25;
-        userStats.javascriptTotalPoints = userStats.javascriptTotalPoints += 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints += 25;
+          userStats.javascriptTotalPoints += 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({room: 'jsQuestions', verdict: 'correct', message: 'Your review was correct! +25 Total Points, +25 Javascript Points!'});
         })
         .catch(err => {
           return res.status(err.code).json(err);
         });
     } else {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints -= 25;
-        userStats.javascriptTotalPoints = userStats.javascriptTotalPoints -= 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints -= 25;
+          userStats.javascriptTotalPoints -= 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({room: 'jsQuestions', verdict: 'incorrect', message: 'Your review was incorrect! -25 Total Points, -25 Javascript Points!'});
         })
         .catch(err => {
           return res.status(err.code).json(err);
@@ -565,33 +559,27 @@ router.post('/judgment/:room',(req,res,next)=>{
     }
   } else if (room === 'htmlQuestions') {
     if (verdict === 'correct') {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints += 25;
-        userStats.htmlTotalPoints = userStats.htmlTotalPoints += 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints += 25;
+          userStats.htmlTotalPoints += 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'htmlQuestions', verdict: 'correct', message: 'Your review was correct! +25 Total Points, +25 HTML Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
         });
     } else {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints -= 25;
-        userStats.htmlTotalPoints = userStats.htmlTotalPoints -= 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints -= 25;
+          userStats.htmlTotalPoints -= 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'htmlQuestions', verdict: 'incorrect', message: 'Your review was incorrect! -25 Total Points, -25 HTML Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
@@ -599,33 +587,27 @@ router.post('/judgment/:room',(req,res,next)=>{
     }
   } else if (room === 'cssQuestions') {
     if (verdict === 'correct') {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints += 25;
-        userStats.cssTotalPoints = userStats.cssTotalPoints += 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints += 25;
+          userStats.cssTotalPoints += 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'cssQuestions', verdict: 'correct', message: 'Your review was correct! +25 Total Points, +25 CSS Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
         });
     } else {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints -= 25;
-        userStats.cssTotalPoints = userStats.cssTotalPoints -= 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints -= 25;
+          userStats.cssTotalPoints -= 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'cssQuestions', verdict: 'incorrect', message: 'Your review was incorrect! -25 Total Points, -25 CSS Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
@@ -633,33 +615,27 @@ router.post('/judgment/:room',(req,res,next)=>{
     }
   } else if (room === 'dsaQuestions') {
     if (verdict === 'correct') {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints += 25;
-        userStats.dsaTotalPoints = userStats.dsaTotalPoints += 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints += 25;
+          userStats.dsaTotalPoints += 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'dsaQuestions', verdict: 'correct', message: 'Your review was correct! +25 Total Points, +25 CSS Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
         });
     } else {
-      UserStats.findOne({ userId }, function(err, userStats) {
-        userStats.totalPoints = userStats.totalPoints -= 25;
-        userStats.dsaTotalPoints = userStats.dsaTotalPoints -= 25; 
-        userStats.save(function(err) {
-          if(err) {
-            console.log('ERROR! Updating User Stats');
-          }
-        });
-      })
-        .then(result => {
-          res.json(result);
+      return UserStats.findOne({ userId })
+        .then(userStats => {
+          userStats.totalPoints -= 25;
+          userStats.dsaTotalPoints -= 25; 
+          return userStats.save();
+        })
+        .then(() => {
+          res.json({ room: 'dsaQuestions', verdict: 'incorrect', message: 'Your review was incorrect! -25 Total Points, -25 CSS Points!' });
         })
         .catch(err => {
           return res.status(err.code).json(err);
