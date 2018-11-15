@@ -63,6 +63,7 @@ router.get('/questions',(req,res,next)=>{
   }
   GameQuestions.findOne()
     .then(result => {
+      result[`${question}`][num].total = result[`${question}`].length;
       res.json(result[`${question}`][num]);
     })
     .catch(err => {
