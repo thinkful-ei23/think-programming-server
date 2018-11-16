@@ -1,10 +1,17 @@
 'use strict';
 const mongoose = require('mongoose');
 const UserStats = require('../../../models/userStats');
+const updateUserStats = require('../../../utils/updateUserStats');
 
 module.exports = (evaluateElement, jsString, input, output,res, userId, next) => {
   const evaluatePromise = new Promise(function(resolve, reject) {
-    resolve(evaluateElement(jsString, input, output));
+    resolve(evaluateElement(jsString, input, output))
+      .catch(err => {
+        updateUserStats(userId, 25, 'incorrect', 'javascript')
+          .then(() => {
+            res.json({error: true, message: 'Incorrect! Challenge not Completed! -25 Total Points, -25 Javascript Points!'}).end();
+          });
+      });
   });
   evaluatePromise  
     .then(() => {
@@ -28,6 +35,9 @@ module.exports = (evaluateElement, jsString, input, output,res, userId, next) =>
         });
     })
     .catch(err => {
-      return res.status(err.code).json(err);
+      updateUserStats(userId, 25, 'incorrect', 'javascript')
+        .then(() => {
+          res.json({error: true, message: 'Incorrect! Challenge not Completed! -25 Total Points, -25 Javascript Points!'}).end();
+        });
     });
 };

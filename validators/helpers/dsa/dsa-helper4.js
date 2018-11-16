@@ -12,4 +12,4 @@ module.exports = {
       throw(`${answer} is not the correct time complexity`); 
     }
   }
-}
+};

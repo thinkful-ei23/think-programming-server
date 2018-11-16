@@ -2,10 +2,17 @@
 
 const mongoose = require('mongoose');
 const UserStats = require('../../../models/userStats');
+const updateUserStats = require('../../../utils/updateUserStats');
 
 module.exports = (evaluateDSA, dsaString, res, userId) => {
   const evaluatePromise = new Promise(function(resolve, reject) {
-    resolve(evaluateDSA(dsaString));
+    resolve(evaluateDSA(dsaString))
+      .catch(err => {
+        updateUserStats(userId, 25, 'incorrect', 'dsa')
+          .then(() => {
+            res.json({error: true, message: 'Incorrect! Challenge not Completed! -25 Total Points, -25 DSA Points!'}).end();
+          });
+      });
   });
   evaluatePromise  
     .then(() => {
@@ -28,6 +35,9 @@ module.exports = (evaluateDSA, dsaString, res, userId) => {
         });
     })
     .catch(err => {
-      return res.status(err.code).json(err);
+      updateUserStats(userId, 25, 'incorrect', 'dsa')
+        .then(() => {
+          res.json({error: true, message: 'Incorrect! Challenge not Completed! -25 Total Points, -25 DSA Points!'}).end();
+        });
     });
 };

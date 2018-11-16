@@ -2,7 +2,7 @@
 const expect = require('../../expect');
 
 module.exports = {
-  evaluateElement: function(answer) {
+  evaluateCSS4: function(answer) {
     let newAnswer = answer.replace(/\s/g, '');
 
     if (newAnswer === 'p{font-weight:bold;}') {

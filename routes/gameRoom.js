@@ -93,7 +93,7 @@ router.post('/answers/jsQuestions/:num',(req,res,next)=>{
     err.status = 400;
     return next(err);
   }
-  if (!jsString) {
+  if (jsString === undefined || !jsString || jsString === null) {
     const err = new Error('missing `answer` in request');
     err.status = 400;
     return next(err);
@@ -167,7 +167,7 @@ router.post('/answers/htmlQuestions/:num',(req,res,next)=>{
   if (isValidHTML(htmlString)) {
     updateUserStats(userId, 25, 'incorrect', 'html')
       .then(result => {
-        res.json({error: true, message: 'Answer not a valid html'});
+        res.json({error: true, message: 'Answer not valid html'});
       })
       .catch(err => {
         return res.status(err.code).json(err);
@@ -323,7 +323,6 @@ router.post('/judgment/:room',(req,res,next)=>{
   }
 
   // Increment/Decrement Total Points + RoomType points
-
   if (room === 'jsQuestions') {
     return updateUserStatsAfterReview(userId, 25, verdict, 'javascript')
       .then(() => {
