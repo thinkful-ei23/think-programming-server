@@ -3,7 +3,7 @@ const expect = require('../../expect');
 const cheerio = require('cheerio');
 
 module.exports = {
-  evaluateElement: function(answer, element, string) {
+  evaluateElement2: function(answer, element, string) {
     const $ = cheerio.load(answer);
     expect($(element)).to.appear(1);
     expect($(element).attr('src'));
