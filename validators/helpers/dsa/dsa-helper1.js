@@ -2,7 +2,7 @@
 const expect = require('../../expect');
 
 module.exports = {
-  evaluateElement: function(answer) {
+  evaluateDSA1: function(answer) {
     let newAnswer = answer.replace(/\s/g, '');
 
     if (newAnswer === 'O(1)') {
@@ -11,4 +11,4 @@ module.exports = {
       throw(`${answer} is not the correct time complexity`); 
     }
   }
-}
+};
