@@ -60,6 +60,7 @@ router.get('/questions',(req,res,next)=>{
     err.status = 400;
     return next(err);
   }
+  console.log('Happening?');
   GameQuestions.findOne()
     .then(result => {
       result[`${question}`][num].total = result[`${question}`].length;

@@ -20,39 +20,42 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('Think Programming API - GameRoom Endpoint', function () {
-  before(async function () {
-    // var options = {
-    //   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-    //   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
-    // };
-    return await mongoose.connect(TEST_MONGODB_URI).then(() => mongoose.connection.db.dropDatabase());
+  function clearDB(){
+    return Promise.all([
+      User.remove().exec(),
+      GameQuestions.remove().exec(),
+      UserStats.remove().exec()
+    ]);
+  }
+  before(function () {
+      // var options = {
+      //   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+      //   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+      // };
+      return mongoose.connect(TEST_MONGODB_URI);
   });
-  let userId = "000000000000000000000001";
+  
   let token;
   let user;
-  
+    
   beforeEach(async function () {
+    await clearDB();
     return await Promise.all([
       User.insertMany(seedUsers),
       GameQuestions.insertMany(seedQuestions),
-      UserStats.insertMany(seedStats)
+      UserStats.insertMany(seedStats),
+      User.createIndexes(),
+      GameQuestions.createIndexes(),
+      UserStats.createIndexes()
     ])
     .then(([users]) => {
-      Promise.all([
-        User.createIndexes(),
-        GameQuestions.createIndexes(),
-        UserStats.createIndexes()
-      ]);
-      return users;
-    })
-    .then(users => {
       user = users[0];
       token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
     });
   });
-
+  
   afterEach(function () {
-    return mongoose.connection.db.dropDatabase();
+    return clearDB();
   });
 
   after(function () {
@@ -154,60 +157,60 @@ describe('Think Programming API - GameRoom Endpoint', function () {
           });
       });      
     });
-    // describe('GET', function () {
-    //   it('should return error if there is no question type sent in requeset', function () {
-    //     const questionType = '';
-    //     const index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .get('/api/gameroom/questions')
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .query({ question: questionType, num: index })
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.eql({ status: 400, message: 'missing `questionType` in request' });
-    //       });
-    //   });
-    // });
-    // describe('GET', function () {
-    //   it('should return error if there is no num for question index sent in requeset', function () {
-    //     const questionType = 'htmlQuestions';
-    //     let index;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .get('/api/gameroom/questions')
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .query({ question: questionType, num: index })
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.eql({ status: 400, message: 'missing `question number` in request' });
-    //       });
-    //   });
-    // });
-    // describe('GET', function () {
-    //   it('should return error if question type sent does not exist', function () {
-    //     const questionType = 'badQuestionType';
-    //     let index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .get('/api/gameroom/questions')
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .query({ question: questionType, num: index })
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.eql({ status: 400, message: 'bad request: `question type` requested does not exist' });
-    //       });
-    //   });
-    // });
+    describe('GET', function () {
+      it('should return error if there is no question type sent in requeset', function () {
+        const questionType = '';
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .get('/api/gameroom/questions')
+          .set('Authorization', `Bearer ${token}`)
+          .query({ question: questionType, num: index })
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.eql({ status: 400, message: 'missing `questionType` in request' });
+          });
+      });
+    });
+    describe('GET', function () {
+      it('should return error if there is no num for question index sent in requeset', function () {
+        const questionType = 'htmlQuestions';
+        let index;
+        let res;
+        return chai
+          .request(app)
+          .get('/api/gameroom/questions')
+          .set('Authorization', `Bearer ${token}`)
+          .query({ question: questionType, num: index })
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.eql({ status: 400, message: 'missing `question number` in request' });
+          });
+      });
+    });
+    describe('GET', function () {
+      it('should return error if question type sent does not exist', function () {
+        const questionType = 'badQuestionType';
+        let index = 0;
+        let res;
+        return chai
+          .request(app)
+          .get('/api/gameroom/questions')
+          .set('Authorization', `Bearer ${token}`)
+          .query({ question: questionType, num: index })
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.eql({ status: 400, message: 'bad request: `question type` requested does not exist' });
+          });
+      });
+    });
   });
   /*=====POST /gameRoom/answers/jsQuestions ENDPOINT=====*/
   describe('/api/gameRoom/answers/jsQuestions/:num', function () {
@@ -287,42 +290,42 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Incorrect! Challenge not Completed! -25 Total Points, -25 Javascript Points!');
           });
       });
-      // it('should return 400 error when answer does not contain any data', function () {
-      //   let answer;
-      //   const index = 0;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message');
-      //       expect(res.body.message).to.eql('missing `answer` in request');
-      //     });
-      // });
-      // it('Should reject requests with unauthorized token sent with request', function () {
-      //   token = '1234badtoken';
-      //   const answer = 'function test(a,b) { return a;}';
-      //   const index = 0;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(401);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('name', 'message', 'status');
-      //       expect(res.body.name).to.eql('AuthenticationError');
-      //       expect(res.body.message).to.eql('Unauthorized');
-      //     });
-      // });
+      it('should return 400 error when answer does not contain any data', function () {
+        let answer;
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
+      it('Should reject requests with unauthorized token sent with request', function () {
+        token = '1234badtoken';
+        const answer = 'function test(a,b) { return a;}';
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('name', 'message', 'status');
+            expect(res.body.name).to.eql('AuthenticationError');
+            expect(res.body.message).to.eql('Unauthorized');
+          });
+      });
       it('Should pass basic validation and run unsucessfully through function validation', function () {
         const answer = 'function () {}';
         let index = 0;
@@ -400,23 +403,23 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Correct! Challenge Completed! +100 Total Points, +100 Javascript Points!');
           });
       });
-      // it('should return 400 error when answer does not contain any data', function () {
-      //   let answer;
-      //   const index = 1;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message');
-      //       expect(res.body.message).to.eql('missing `answer` in request');
-      //     });
-      // });
+      it('should return 400 error when answer does not contain any data', function () {
+        let answer;
+        const index = 1;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
       it('Should pass basic validation and run unsucessfully through function validation', function () {
         const answer = 'function () {}';
         let index = 1;
@@ -493,23 +496,23 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Correct! Challenge Completed! +100 Total Points, +100 Javascript Points!');
           });
       });
-      // it('should return 400 error when answer does not contain any data', function () {
-      //   let answer;
-      //   const index = 2;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message');
-      //       expect(res.body.message).to.eql('missing `answer` in request');
-      //     });
-      // });
+      it('should return 400 error when answer does not contain any data', function () {
+        let answer;
+        const index = 2;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
       it('Should pass basic validation and run unsucessfully through function validation', function () {
         const answer = 'function () {}';
         let index = 2;
@@ -587,23 +590,23 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Correct! Challenge Completed! +100 Total Points, +100 Javascript Points!');
           });
       });
-      // it('should return 400 error when answer does not contain any data', function () {
-      //   let answer;
-      //   const index = 3;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message');
-      //       expect(res.body.message).to.eql('missing `answer` in request');
-      //     });
-      // });
+      it('should return 400 error when answer does not contain any data', function () {
+        let answer;
+        const index = 3;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
       it('Should pass basic validation and run unsucessfully through function validation', function () {
         const answer = 'function () {}';
         let index = 3;
@@ -681,23 +684,23 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Correct! Challenge Completed! +100 Total Points, +100 Javascript Points!');
           });
       });
-      // it('should return 400 error when answer does not contain any data', function () {
-      //   let answer;
-      //   const index = 4;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/jsQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message');
-      //       expect(res.body.message).to.eql('missing `answer` in request');
-      //     });
-      // });
+      it('should return 400 error when answer does not contain any data', function () {
+        let answer;
+        const index = 4;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/jsQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
       it('Should pass basic validation and run unsucessfully through function validation', function () {
         const answer = 'function () {}';
         let index = 4;
@@ -760,63 +763,63 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Answer not valid html');
           });
       });
-      // it('should return error when question number does not exist', function () {
-      //   const answer = '<h1>My first HTML title<h1>';
-      //   const index = 1000;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/htmlQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('message', 'status', 'location');
-      //       expect(res.body.status).to.eql(400);
-      //       expect(res.body.message).to.eql('question number does not exist');
-      //       expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
-      //     });
-      // });
-      // it('should return error question number is blank', function () {
-      //   const answer = '<h1> My first HTML <h1>';
-      //   let index;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/htmlQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('message', 'status', 'location');
-      //       expect(res.body.status).to.eql(400);
-      //       expect(res.body.message).to.eql('missing `number` in request');
-      //       expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
-      //     });
-      // });
-    //   it('should return error when answer is blank', function () {
-    //     const answer = '';
-    //     let index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/htmlQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('message', 'status', 'location');
-    //         expect(res.body.status).to.eql(400);
-    //         expect(res.body.message).to.eql('missing `answer` in request');
-    //         expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
-    //       });
-    //   });
+      it('should return error when question number does not exist', function () {
+        const answer = '<h1>My first HTML title<h1>';
+        const index = 1000;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/htmlQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.message).to.eql('question number does not exist');
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
+          });
+      });
+      it('should return error question number is blank', function () {
+        const answer = '<h1> My first HTML <h1>';
+        let index;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/htmlQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.message).to.eql('missing `number` in request');
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
+          });
+      });
+      it('should return error when answer is blank', function () {
+        const answer = '';
+        let index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/htmlQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.message).to.eql('missing `answer` in request');
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/htmlQuestions/:num');
+          });
+      });
     });
     /*======HTML Question 2======*/
     describe('POST htmlQuestion 2', function () {
@@ -1310,66 +1313,66 @@ describe('Think Programming API - GameRoom Endpoint', function () {
   /*======CSS Answers======*/
   describe('/api/gameRoom/answers/cssQuestions/:num', function () {
     /*======CSS Answer Endpoint validations======*/
-    // describe('POST checking for missing or incorrect userId, missing number, missing answer', function () {
-    //   it('should return 401 Unauthorized error if bad token is sent', function () {
-    //     token = 'badToken';
-    //     const answer = '/* bla bla bla */';
-    //     const index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/cssQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(401);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('name', 'message', 'status');
-    //         expect(res.body.status).to.eql(401);
-    //         expect(res.body.name).to.eql('AuthenticationError');
-    //         expect(res.body.message).to.eql('Unauthorized');
-    //       });
-    //   });
-    //   it('should return 400 error if question number is missing', function () {
-    //     const answer = '/* bla bla bla */';
-    //     let index;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/cssQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('message', 'status', 'location');
-    //         expect(res.body.status).to.eql(400);
-    //         expect(res.body.location).to.eql('POST api/gameRoom/answers/cssQuestions/:num');
-    //         expect(res.body.message).to.eql('missing `number` in request');
-    //       });
-    //   });
-    //   it('should return 400 error if question answer is undefined', function () {
-    //     let answer;
-    //     const index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/cssQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('message', 'status', 'location');
-    //         expect(res.body.status).to.eql(400);
-    //         expect(res.body.location).to.eql('POST api/gameRoom/answers/cssQuestions/:num');
-    //         expect(res.body.message).to.eql('missing `answer` in request');
-    //       });
-    //   });
-    //});
+    describe('POST checking for missing or incorrect userId, missing number, missing answer', function () {
+      it('should return 401 Unauthorized error if bad token is sent', function () {
+        token = 'badToken';
+        const answer = '/* bla bla bla */';
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/cssQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('name', 'message', 'status');
+            expect(res.body.status).to.eql(401);
+            expect(res.body.name).to.eql('AuthenticationError');
+            expect(res.body.message).to.eql('Unauthorized');
+          });
+      });
+      it('should return 400 error if question number is missing', function () {
+        const answer = '/* bla bla bla */';
+        let index;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/cssQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/cssQuestions/:num');
+            expect(res.body.message).to.eql('missing `number` in request');
+          });
+      });
+      it('should return 400 error if question answer is undefined', function () {
+        let answer;
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/cssQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/cssQuestions/:num');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
+    });
     /*======CSS Question 1======*/
     describe('POST cssQuestion 1', function () {
       // "title": "Comments in CSS",
@@ -1598,64 +1601,64 @@ describe('Think Programming API - GameRoom Endpoint', function () {
   describe('/api/gameRoom/answers/dsaQuestions/:num', function () {
     /*======DSA Answer Endpoint validations======*/
     describe('POST checking for missing or incorrect userId, missing number, missing answer', function () {
-      // it('should return 401 Unauthorized error if bad token is sent', function () {
-      //   token = 'badToken';
-      //   const answer = '/* bla bla bla */';
-      //   const index = 0;
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/answers/dsaQuestions/${index}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({answer})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(401);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('name', 'message', 'status');
-      //       expect(res.body.status).to.eql(401);
-      //       expect(res.body.name).to.eql('AuthenticationError');
-      //       expect(res.body.message).to.eql('Unauthorized');
-      //     });
-      // });
-    //   it('should return 400 error if question number is missing', function () {
-    //     const answer = '/* bla bla bla */';
-    //     let index;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/dsaQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('message', 'status', 'location');
-    //         expect(res.body.status).to.eql(400);
-    //         expect(res.body.location).to.eql('POST api/gameRoom/answers/dsaQuestions/:num');
-    //         expect(res.body.message).to.eql('missing `number` in request');
-    //       });
-    //   });
-    //   it('should return 400 error if question answer is undefined', function () {
-    //     let answer;
-    //     const index = 0;
-    //     let res;
-    //     return chai
-    //       .request(app)
-    //       .post(`/api/gameroom/answers/dsaQuestions/${index}`)
-    //       .set('Authorization', `Bearer ${token}`)
-    //       .send({answer})
-    //       .then(_res => {
-    //         res = _res;
-    //         expect(res).to.have.status(400);
-    //         expect(res.body).to.be.an('object');
-    //         expect(res.body).to.have.all.keys('message', 'status', 'location');
-    //         expect(res.body.status).to.eql(400);
-    //         expect(res.body.location).to.eql('POST api/gameRoom/answers/dsaQuestions/:num');
-    //         expect(res.body.message).to.eql('missing `answer` in request');
-    //       });
-    //   });
+      it('should return 401 Unauthorized error if bad token is sent', function () {
+        token = 'badToken';
+        const answer = '/* bla bla bla */';
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/dsaQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('name', 'message', 'status');
+            expect(res.body.status).to.eql(401);
+            expect(res.body.name).to.eql('AuthenticationError');
+            expect(res.body.message).to.eql('Unauthorized');
+          });
+      });
+      it('should return 400 error if question number is missing', function () {
+        const answer = '/* bla bla bla */';
+        let index;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/dsaQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/dsaQuestions/:num');
+            expect(res.body.message).to.eql('missing `number` in request');
+          });
+      });
+      it('should return 400 error if question answer is undefined', function () {
+        let answer;
+        const index = 0;
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/answers/dsaQuestions/${index}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({answer})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('message', 'status', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.location).to.eql('POST api/gameRoom/answers/dsaQuestions/:num');
+            expect(res.body.message).to.eql('missing `answer` in request');
+          });
+      });
     });
     /*======DSA Question 1======*/
     describe('POST dsaQuestion 1', function () {
@@ -2030,25 +2033,25 @@ describe('Think Programming API - GameRoom Endpoint', function () {
             expect(res.body.message).to.eql('Unauthorized');
           });
       });
-      // it('should return `400 missing room in request` if no params are sent with request', function () {
-      //   const verdict = 'correct';
-      //   const room = 'not-valid';
-      //   let res;
-      //   return chai
-      //     .request(app)
-      //     .post(`/api/gameroom/judgment/${room}`)
-      //     .set('Authorization', `Bearer ${token}`)
-      //     .send({verdict})
-      //     .then(_res => {
-      //       res = _res;
-      //       expect(res).to.have.status(400);
-      //       expect(res.body).to.be.an('object');
-      //       expect(res.body).to.have.all.keys('status', 'message', 'location');
-      //       expect(res.body.status).to.eql(400);
-      //       expect(res.body.message).to.eql('bad request: `room` requested does not exist');
-      //       expect(res.body.location).to.eql('POST api/gameRoom/judgment/:room');
-      //     });
-      // });
+      it('should return `400 missing room in request` if no params are sent with request', function () {
+        const verdict = 'correct';
+        const room = 'not-valid';
+        let res;
+        return chai
+          .request(app)
+          .post(`/api/gameroom/judgment/${room}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({verdict})
+          .then(_res => {
+            res = _res;
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.all.keys('status', 'message', 'location');
+            expect(res.body.status).to.eql(400);
+            expect(res.body.message).to.eql('bad request: `room` requested does not exist');
+            expect(res.body.location).to.eql('POST api/gameRoom/judgment/:room');
+          });
+      });
     });
     /*======RoomType jsQuestions Judgment Validations======*/
     describe('POST jsQuestions', function () {

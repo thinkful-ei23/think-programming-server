@@ -70,7 +70,19 @@ describe('ThinkProgramming API - Auth', function () {
           expect(res.body.message).to.equal('Bad Request');
         });
     });
-
+    it('Should reject requests without credentials', function () {
+      return chai.request(app)
+        .post('/api/auth/login')
+        .then(() => {
+        })
+        .catch(err => {
+          if (err instanceof chai.AssertionError) {
+            throw err;
+          }
+          const res = err.response;
+          expect(res).to.have.status(400);
+        });
+    });
     it('Should reject requests with empty string username', function () {
       return chai.request(app)
         .post('/api/auth/login')
@@ -97,6 +109,16 @@ describe('ThinkProgramming API - Auth', function () {
       return chai.request(app)
         .post('/api/aut/login')
         .send({ username: 'wrongUsername', password: 'password' })
+        .then(res => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body.message).to.equal('Not Found');
+        });
+    });
+    it('Should reject requests with incorrect password', function () {
+      return chai.request(app)
+        .post('/api/aut/login')
+        .send({ username, password: 'badpassword' })
         .then(res => {
           expect(res).to.have.status(404);
           expect(res.body).to.be.an('object');
