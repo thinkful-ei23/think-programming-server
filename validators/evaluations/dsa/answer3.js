@@ -22,7 +22,7 @@ module.exports = (dsaString, res, userId) => {
           }
         });
       });
-      res.json({error: false, message: 'Challenge completed'}).end();
+      res.json({error: false, message: 'Correct! Challenge Completed! +100 Total Points, +100 DSA Points!'}).end();
     })
     .catch(e => {
       console.log(e);

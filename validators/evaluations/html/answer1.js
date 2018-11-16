@@ -21,7 +21,7 @@ module.exports = (htmlString, res, userId) => {
           }
         });
       });
-      res.json({error: false, message: 'Challenge completed'});
+      res.json({error: false, message: 'Correct! Challenge Completed! +100 Total Points, +100 HTML Points!'});
     })
     .catch(e => {
       console.log(e);
