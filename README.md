@@ -14,6 +14,13 @@
     </strong>
 </p>
 
+```
+Demo Account
+
+Username: demo
+password: demopassword
+```
+
 ## What Is Think Programming
 Think Programming is a place for coders to hone skills and challenge other programming enthusiasts to write clean accurate code.
 
