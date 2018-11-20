@@ -100,6 +100,7 @@ router.post('/', (req, res, next) => {
 
   return User.hashPassword(password)
     .then(digest => {
+      console.log('password ==>', digest, '<===');
       const newUser = {
         username,
         password: digest,

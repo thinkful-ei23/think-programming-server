@@ -6,9 +6,11 @@ const { MONGODB_URI } = require('../config');
 
 // Import models
 const User = require('../models/user');
+const UserStats = require('../models/userStats');
 const GameQuestions = require('../models/gameQuestions');
 // Import seed data
 const seedUsers = require('../db/seed/users');
+const seedUserStats = require('../db/seed/userStats');
 const seedGameQuestions = require('../db/seed/gameQuestions');
 
 mongoose.connect(MONGODB_URI)
@@ -17,6 +19,8 @@ mongoose.connect(MONGODB_URI)
     return Promise.all([
       User.insertMany(seedUsers),
       User.createIndexes(),
+      UserStats.insertMany(seedUserStats),
+      UserStats.createIndexes(),
       GameQuestions.insertMany(seedGameQuestions),
       GameQuestions.createIndexes()
     ]);
