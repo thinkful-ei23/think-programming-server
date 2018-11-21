@@ -17,7 +17,10 @@
 ```
 Demo Account
 
-Username: demo
+Username: demo1
+password: demopassword
+
+Username: demo2
 password: demopassword
 ```
 

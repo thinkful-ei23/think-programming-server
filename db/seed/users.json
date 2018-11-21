@@ -12,7 +12,13 @@
 },
 {
   "_id": "000000000000000000000003",
-  "name": "demo",
-  "username": "demo",
+  "name": "demo1",
+  "username": "demo1",
+  "password": "$2a$10$c/2J7Na8UBAGN12tpE2Gr.lwPQ3yYDZ.6mCJCJTr86mQdJbaZKZVm"
+},
+{
+  "_id": "000000000000000000000004",
+  "name": "demo2",
+  "username": "demo2",
   "password": "$2a$10$c/2J7Na8UBAGN12tpE2Gr.lwPQ3yYDZ.6mCJCJTr86mQdJbaZKZVm"
 }]
