@@ -37,7 +37,10 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 <div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>
 
+<br>
+
 <div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>
+<br>
 
 <div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>
 
