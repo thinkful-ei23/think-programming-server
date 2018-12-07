@@ -37,37 +37,41 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ## Mobile Screenshots
 
-|<div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>|
+<div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>
 
 <br>
 
 ## Tablet and Desktop Screenshots
 
-|<div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>|
+<div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>
 
 <br>
 
 ## Features
 
-|<div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>|
+<div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>
 
 ### Our Three Week Timeline
 #### Week One
-* decide on project idea
-* decide on tech stack to best fit idea
-* define user stories
-* design wireframes and user flow using Adobe XD
-* design product architecture  
-* Build trello breakdown: to promote team communication, set clear goals and set small manageable tasks
-* build React app and collaborate with github
-* build Node Express app and collaborate with github
-* deploy client and server to Heroku
-* enable continuous integration service with Travis CI
-* start implementing key features
-* build logos using adobe illustrator
-* mobile first css using css grid
-* basic README.md
-* complete MVP
+
+<ul>
+<li>decide on project idea</li>
+<li>decide on tech stack to best fit idea</li>
+<li>define user stories</li>
+<li>design wireframes and user flow using Adobe XD</li>
+<li>design product architecture</li>
+<li>Build trello breakdown: to promote team communication, set clear goals and set small manageable tasks</li>
+<li>build React app and collaborate with github</li>
+<li>build Node Express app and collaborate with github</li>
+<li>deploy client and server to Heroku</li>
+<li>enable continuous integration service with Travis CI</li>
+<li>start implementing key features</li>
+<li>build logos using adobe illustrator</li>
+<li>mobile first css using css grid</li>
+<li>basic README.md</li>
+<li>complete MVP</li>
+</ul>
+
 #### Week Two
 * develop thing program coding problem content
 * socket namespacing development
@@ -93,11 +97,10 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ## Tech Used
 
-|<div align='center'><img width=100% src="./assets/Think-Programming-Tech.png" alt="Tech Used"><div>|
+<div align='center'><img width=100% src="./assets/Think-Programming-Tech.png" alt="Tech Used"><div>
 
 ### Developers
 
 | <img src="https://avatars0.githubusercontent.com/u/33415107?s=400&v=4" width="100px;"/> | <img src="https://avatars3.githubusercontent.com/u/39195676?s=400&v=4" width="100px;"/> | <img src="https://avatars1.githubusercontent.com/u/38868844?s=400&v=4" width="100px;"/> | <img src="https://avatars0.githubusercontent.com/u/32793713?s=400&v=4" width="100px;"/> |
 | :----: | :----: | :----: | :----: |
 | [Timothy Dao](https://github.com/JacobMacInnis) | [Jacob MacInnis](https://github.com/JacobMacInnis) | [Jeff Maxwell](https://github.com/maxjeffwell) | [Jon Sung](https://github.com/jonsung89) |
-
