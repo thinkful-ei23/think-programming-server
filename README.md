@@ -73,26 +73,33 @@ Think Programming is the result of a three week group Full Stack build. Using th
 </ul>
 
 #### Week Two
-* develop thing program coding problem content
-* socket namespacing development
-* redux, and state management improvements
-* unit testing along the way
-* modularize code to improve collaboration
-* basic validation
-* crowd feedback to improve feature development and goals
-* tighten user experience
-* test, test, test!
+
+<ul align='left'>
+<li>develop thing program coding problem content</li>
+<li>socket namespacing development</li>
+<li>redux, and state management improvements</li>
+<li>unit testing along the way</li>
+<li>modularize code to improve collaboration</li>
+<li>basic validation</li>
+<li>crowd feedback to improve feature development and goals</li>
+<li>tighten user experience</li>
+<li>test, test, test!</li>
+</ul>
+
 #### Week Three
-* key features wrap up
-* clean up UX and add needed features
-* Bug-fixing
-* validation improvements
-* complete mocha server testing
-* complete enzyme client testing: smoke-tests, component tests, redux testing
-* socket testing
-* test, test, test!
-* polish, polish, polish!
-* complete product ready to ship!
+
+<ul align='left'> 
+<li>key features wrap up</li>
+<li>clean up UX and add needed features</li>
+<li>Bug-fixing</li>
+<li>validation improvements</li>
+<li>complete mocha server testing</li>
+<li>complete enzyme client testing: smoke-tests, component tests, redux testing</li>
+<li>socket testing</li>
+<li>test, test, test!</li>
+<li>polish, polish, polish!</li>
+<li>complete product ready to ship!</li>
+</ul>
 
 
 ## Tech Used
