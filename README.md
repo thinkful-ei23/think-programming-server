@@ -35,6 +35,12 @@ That's not all! At Think Programming, cheating is allowed! Be careful to write y
 ## Why?
 Think Programming is the result of a three week group Full Stack build. Using the MERN Stack (Mongo-Express-React-Node) as well many other technologies we we experienced the full Software Development Life Cycle but for actual production deployment and maintenance.   Working with senior developers using the latest development stategies and holding daily standups we started with a small idea and put together a pretty expansive mobile first web application. Please see below for a glimpse into our process. 
 
+<div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>
+
+<div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>
+
+<div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>
+
 ### Our Three Week Timeline
 #### Week One
 * decide on project idea
@@ -77,7 +83,9 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ## Tech Used
 
-### Front-End
+<div align='center'><img width=100% src="./assets/Think-Programming-Tech.png" alt="Tech Used"><div>
+
+<!-- ### Front-End
 * React
 * Redux
 * Redux-Router
@@ -110,7 +118,7 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ### Other
 * Adobe XD
-* Adobe Illustrator
+* Adobe Illustrator -->
 
 ### Developers
 
