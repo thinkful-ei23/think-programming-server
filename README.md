@@ -54,7 +54,7 @@ Think Programming is the result of a three week group Full Stack build. Using th
 ### Our Three Week Timeline
 #### Week One
 
-<ul>
+<ul align='left'>
 <li>decide on project idea</li>
 <li>decide on tech stack to best fit idea</li>
 <li>define user stories</li>
