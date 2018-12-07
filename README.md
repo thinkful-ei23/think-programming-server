@@ -37,19 +37,19 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ## Mobile Screenshots
 
-<div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>
+|<div align='center'><img width=100% src="./assets/Think-Programming-Mobile-Screenshots.png" alt="Mobile Screenshots"><div>|
 
 <br>
 
 ## Tablet and Desktop Screenshots
 
-<div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>
+|<div align='center'><img width=100% src="./assets/Think-Programming-Tablet-Desktop-Screenshots.png" alt="Tablet and Desktop Screenshots"><div>|
 
 <br>
 
 ## Features
 
-<div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>
+|<div align='center'><img width=100% src="./assets/Think-Programming-Features.png" alt="Features"><div>|
 
 ### Our Three Week Timeline
 #### Week One
@@ -93,42 +93,7 @@ Think Programming is the result of a three week group Full Stack build. Using th
 
 ## Tech Used
 
-<div align='center'><img width=100% src="./assets/Think-Programming-Tech.png" alt="Tech Used"><div>
-
-<!-- ### Front-End
-* React
-* Redux
-* Redux-Router
-* Redux-Form
-* Redux-Thunk
-* Socket.io
-* React Ace
-* Enzyme
-* Jest
-* JavaScript
-* HTML5
-* CSS3
-
-### Back-End
-* Node.js
-* Express.js
-* Mongoose
-* mLab
-* Passport
-* Bcryptjs
-* JWT
-* Socket.io
-* Mocha
-* Chai
-### Deployment
-* Github
-* TravisCI
-* Heroku
-* mlab
-
-### Other
-* Adobe XD
-* Adobe Illustrator -->
+|<div align='center'><img width=100% src="./assets/Think-Programming-Tech.png" alt="Tech Used"><div>|
 
 ### Developers
 
